@@ -108,6 +108,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     CarrierConfigOverlayKunzite \
     FrameworksOverlayKunzite \
+    LineageSDKOverlayKunzite \
     NfcOverlayKunzite \
     SecureElementOverlayKunzite \
     SettingsOverlayKunzite \
