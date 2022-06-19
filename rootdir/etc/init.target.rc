@@ -597,3 +597,13 @@ on property:ro.vendor.oem.btmac=*
 on property:ro.vendor.oem.wifimac=*
     chmod 0664 /data/vendor/mac_addr/wlan.mac
 # lct.dongxiaolong modify for BUGP17-3810 CQR end
+
+service vendor.sensors-hal-multihal /vendor/bin/hw/android.hardware.sensors-service.multihal
+    override
+    class hal
+    user system
+    group system wakelock context_hub input uhid
+    task_profiles ServiceCapacityLow
+    socket audio_us_socket_1 seqpacket 0666 system system
+    capabilities BLOCK_SUSPEND
+    rlimit rtprio 10 10
