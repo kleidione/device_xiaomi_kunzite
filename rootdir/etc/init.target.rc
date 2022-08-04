@@ -607,3 +607,17 @@ service vendor.sensors-hal-multihal /vendor/bin/hw/android.hardware.sensors-serv
     socket audio_us_socket_1 seqpacket 0666 system system
     capabilities BLOCK_SUSPEND
     rlimit rtprio 10 10
+
+service vendor.audio-hal-aidl /vendor/bin/hw/audiohalservice.qti
+    override
+    class hal
+    user audioserver
+    group audio media mediadrm drmrpc inet net_bt net_bt_admin net_bw_acct wakelock context_hub oem_2901 oem_2912
+    capabilities BLOCK_SUSPEND SYS_NICE
+    # setting RLIMIT_RTPRIO allows binder RT priority inheritance
+    rlimit rtprio 10 10
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance
+    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
+    socket audio_us_socket_0 seqpacket 0666 system system
+    onrestart restart audioserver
