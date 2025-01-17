@@ -19,6 +19,49 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
 # Audio
+PRODUCT_PACKAGES += \
+    audio.bluetooth.default \
+    audio.r_submix.default \
+    audio.usb.default \
+    audioadsprpcd \
+    audiohalservice.qti \
+    libagm_compress_plugin \
+    libagm_mixer_plugin \
+    libagm_pcm_plugin \
+    libaudiochargerlistener \
+    libbatterylistener \
+    libfmpal \
+    libhfp_pal \
+    libmediautils_vendor.vendor \
+    libmemunreachable.vendor \
+    libpalipcservice \
+    libsndcardparser \
+    libsoundtriggerhal.qti \
+    qtiaudiohalvendorextn
+
+PRODUCT_PACKAGES += \
+    android.hardware.audio.common-V1-ndk.vendor \
+    android.hardware.audio.core-V2-ndk.vendor \
+    android.hardware.audio.core.sounddose-V1-ndk.vendor \
+    libalsautilsv2.vendor \
+    libaudioaidlcommon.vendor \
+    libaudioutils_shim
+
+AUDIO_HAL_DIR := hardware/qcom-caf/sm8450-6.6/audio/primary-hal
+CONFIG_HAL_SRC_DIR := $(AUDIO_HAL_DIR)/configs/parrot
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/audio/audio_module_config_primary.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/audio_module_config_primary.xml \
+    $(LOCAL_PATH)/configs/audio/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+    $(LOCAL_PATH)/configs/audio/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
+    $(LOCAL_PATH)/configs/audio/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml
+
+PRODUCT_COPY_FILES += \
+    $(CONFIG_HAL_SRC_DIR)/audio_effects_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_parrot/audio_effects_config.xml \
+    $(CONFIG_HAL_SRC_DIR)/card-defs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/card-defs.xml \
+    $(CONFIG_HAL_SRC_DIR)/microphone_characteristics.xml:$(TARGET_COPY_OUT_VENDOR)/etc/microphone_characteristics.xml \
+    $(CONFIG_HAL_SRC_DIR)/vendor_audio_interfaces.xml:$(TARGET_COPY_OUT_VENDOR)/etc/vendor_audio_interfaces.xml
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml \
@@ -26,6 +69,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
 # Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth.audio-impl \
+    lib_bt_aptx \
+    lib_bt_ble \
+    lib_bt_bundle
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth.xml \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth_le.xml

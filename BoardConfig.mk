@@ -14,6 +14,20 @@ TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := generic
 TARGET_CPU_VARIANT_RUNTIME := kryo300
 
+# Audio
+AUDIO_FEATURE_ENABLED_DLKM := true
+AUDIO_FEATURE_ENABLED_EXTENDED_COMPRESS_FORMAT := true
+AUDIO_FEATURE_ENABLED_GKI := true
+AUDIO_FEATURE_ENABLED_INSTANCE_ID := true
+AUDIO_FEATURE_ENABLED_MCS := true
+AUDIO_FEATURE_ENABLED_SVA_MULTI_STAGE := true
+BOARD_SUPPORTS_OPENSOURCE_STHAL := true
+BOARD_SUPPORTS_SOUND_TRIGGER := true
+BOARD_USES_ALSA_AUDIO := true
+TARGET_PROVIDES_AUDIO_HAL := true
+TARGET_PROVIDES_LIBAR_PAL := true
+TARGET_PROVIDES_LIBAGM := true
+
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := parrot
 
@@ -29,7 +43,9 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
 
 DEVICE_MATRIX_FILE := hardware/qcom-caf/common/compatibility_matrix_aidl.xml
-DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/configs/hidl/manifest.xml
+DEVICE_MANIFEST_FILE += \
+    $(DEVICE_PATH)/configs/hidl/manifest.xml \
+    hardware/qcom-caf/sm8450-6.6/audio/primary-hal/configs/parrot/manifest_audio_qti_services.xml
 
 # Kernel
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
