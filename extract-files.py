@@ -159,6 +159,8 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('android.media.audio.common.types-V2-ndk.so', 'android.media.audio.common.types-V3-ndk.so'),
     'vendor/lib64/libqtigefar.so': blob_fixup()
         .replace_needed('android.hardware.audio.core-V1-ndk.so', 'android.hardware.audio.core-V2-ndk.so'),
+    'vendor/etc/sensors/hals.conf': blob_fixup()
+        .regex_replace('sensors.ssc.so', 'sensors.ssc_wrapper.so'),
 } # fmt: skip
 
 module = ExtractUtilsModule(
