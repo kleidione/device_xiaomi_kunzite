@@ -14,4 +14,9 @@
         <fqname>IWifiDisplaySessionImageTrack/default</fqname>
         <fqname>IWifiDisplaySessionVideoTrack/default</fqname>
     </hal>
+    <hal format="aidl">
+        <name>vendor.xiaomi.hardware.fx.tunnel</name>
+        <version>1</version>
+        <fqname>IMiFxTunnel/default</fqname>
+    </hal>
 </manifest>

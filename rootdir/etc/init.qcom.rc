@@ -130,6 +130,10 @@ on early-boot
     chown system system /mnt/vendor/persist/data/pfm/licenses/store_4
     chmod 0664 /mnt/vendor/persist/data/pfm/licenses/store_4
 
+    # Fingerprint
+    chown system graphics /sys/bus/platform/devices/soc:xiaomi_fingerprint/fingerdown
+    chmod 0664 /sys/bus/platform/devices/soc:xiaomi_fingerprint/fingerdown
+
 on boot
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth net_bt /sys/class/rfkill/rfkill0/type
@@ -269,6 +273,15 @@ on boot
 
     # limit discard size to 128MB in order to avoid long IO latency
     write /sys/block/sda/queue/discard_max_bytes 134217728
+
+    # Fingerprint
+    chmod 0666 /dev/xiaomi-fp
+    chown system system /dev/xiaomi-fp
+    chmod 0666 /dev/mifp_id
+    chown system system /dev/mifp_id
+    chmod 0666 /dev/input/event2
+    chown system system /sys/bus/platform/devices/soc:xiaomi_fingerprint/intr2
+    chmod 0666 /sys/bus/platform/devices/soc:xiaomi_fingerprint/intr2
 
     # ADD: QDSS permission
     chown -h vendor_qdss /sys/bus/coresight/devices/coresight-tmc-etr/block_size
@@ -479,6 +492,22 @@ on post-fs-data
 
     #Create dir for TUI
     mkdir /data/vendor/tui 0700 system drmrpc
+
+    # Fingerprint
+    mkdir /data/vendor/misc 01771 system system
+    mkdir /data/vendor/misc/mi_fp 0770 system system
+    mkdir /persist/mi_fp 0770 system system
+    mkdir /mnt/vendor/persist/mi_fp 0770 system system
+    mkdir /data/vendor/fpc 0770 system system
+    mkdir /data/vendor/fpdump 0770 system system
+    mkdir /data/vendor/goodix 0770 system system
+    mkdir /data/vendor/fpdata 0770 system system
+    mkdir /data/vendor/fingerprint 0770 system system
+    mkdir /mnt/vendor/persist/goodix 0770 system system
+    mkdir /mnt/vendor/persist/fingerprint 0770 system system
+    mkdir /data/vendor/fpdump/qfs4008 0770 system system
+    mkdir /mnt/vendor/persist/fingerprint/meta 0770 system system
+    mkdir /mnt/vendor/persist/fingerprint/jiiov 0770 system system
 
 service nqnfcinfo /system/vendor/bin/nqnfcinfo
     class late_start
