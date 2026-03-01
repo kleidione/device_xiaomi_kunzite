@@ -50,8 +50,9 @@
             "Name": "procSysWaltSchedBoost",
             "Path": "/proc/sys/walt/sched_boost",
             "Values": [
-                "1",
-                "2"
+                "0",
+                "2",
+                "1"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -77,10 +78,10 @@
             "ResetOnInit": true
         },
         {
-            "Name": "sysDevicesSystemCpuCpu0CoreCtlMinCpus",
-            "Path": "/sys/devices/system/cpu/cpu0/core_ctl/min_cpus",
+            "Name": "sysDevicesSystemCpuCpu4CoreCtlMinCpus",
+            "Path": "/sys/devices/system/cpu/cpu4/core_ctl/min_cpus",
             "Values": [
-                "1",
+                "2",
                 "3",
                 "4"
             ],
@@ -300,7 +301,7 @@
         },
         {
             "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpu0CoreCtlMinCpus",
+            "Node": "sysDevicesSystemCpuCpu4CoreCtlMinCpus",
             "Value": "3",
             "Duration": 0
         },
@@ -372,7 +373,7 @@
         },
         {
             "PowerHint": "CAMERA_STREAMING_LOW",
-            "Node": "sysDevicesSystemCpuCpu0CoreCtlMinCpus",
+            "Node": "sysDevicesSystemCpuCpu4CoreCtlMinCpus",
             "Value": "4",
             "Duration": 0
         },
@@ -456,7 +457,7 @@
         },
         {
             "PowerHint": "CAMERA_STREAMING_MID",
-            "Node": "sysDevicesSystemCpuCpu0CoreCtlMinCpus",
+            "Node": "sysDevicesSystemCpuCpu4CoreCtlMinCpus",
             "Value": "4",
             "Duration": 0
         },
@@ -522,7 +523,7 @@
         },
         {
             "PowerHint": "CAMERA_STREAMING_HIGH",
-            "Node": "sysDevicesSystemCpuCpu0CoreCtlMinCpus",
+            "Node": "sysDevicesSystemCpuCpu4CoreCtlMinCpus",
             "Value": "4",
             "Duration": 0
         },
