@@ -63,6 +63,7 @@ PRODUCT_PACKAGES += \
     android.hardware.audio.common-V1-ndk.vendor \
     android.hardware.audio.core-V2-ndk.vendor \
     android.hardware.audio.core.sounddose-V1-ndk.vendor \
+    qti-audio-types-aidl-V1-ndk.vendor \
     libalsautilsv2.vendor \
     libaudioaidlcommon.vendor \
     libaudioutils_shim
