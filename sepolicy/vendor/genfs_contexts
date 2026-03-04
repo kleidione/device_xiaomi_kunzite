@@ -1,6 +1,3 @@
-# Battery
-genfscon sysfs /class/qcom-battery u:object_r:vendor_sysfs_qcom_battery:s0
-
 # Camera
 genfscon sysfs /devices/platform/soc/soc:qcom,camera-flash@0/leds/led:torch/brightness u:object_r:sysfs_flash_name:s0
 
