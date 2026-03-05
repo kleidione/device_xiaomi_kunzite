@@ -1,5 +1,6 @@
 # Audio
 persist.vendor.audio.cloud u:object_r:vendor_audio_cloud_ctrl_mi_prop:s0
+vendor.audio.usb_cctoggle u:object_r:vendor_audio_prop:s0 exact string
 
 # Camera
 persist.vendor.miface.* u:object_r:vendor_miface_prop:s0
