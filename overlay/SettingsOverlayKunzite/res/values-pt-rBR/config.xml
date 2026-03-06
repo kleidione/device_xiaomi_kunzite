@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="config_color_mode_options_strings">
+        <item>Saturado</item>
+        <item>Padrão</item>
+        <item>Vívido</item>
+    </string-array>
+</resources>
