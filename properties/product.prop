@@ -42,10 +42,8 @@ bluetooth.profile.pbap.server.enabled=true
 bluetooth.profile.vcp.controller.enabled=false
 
 # Display
-debug.sf.disable_backpressure=1
-debug.sf.disable_translate_dataspace=true
-debug.sf.mi_asynchronous_re.enable=true
 ro.surface_flinger.supports_background_blur=1
+ro.surface_flinger.wcg_composition_dataspace=143261696
 
 # F2FS
 persist.fsck.disable_linear_lookup=on

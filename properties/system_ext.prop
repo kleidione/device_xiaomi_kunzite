@@ -13,9 +13,6 @@ persist.bluetooth.leaudio.notify.idle.during.call=true
 persist.bluetooth.leaudio_offload.disabled=false
 ro.bluetooth.leaudio_offload.supported=true
 
-# Display
-ro.surface_flinger.supports_background_blur=1
-
 # DPM
 persist.vendor.dpm.feature=11
 
