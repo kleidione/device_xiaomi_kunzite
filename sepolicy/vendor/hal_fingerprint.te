@@ -21,6 +21,7 @@ allow hal_fingerprint_default vendor_dmabuf_qseecom_ta_heap_device:chr_file { io
 allow hal_fingerprint_default vendor_fingerprint_device:chr_file rwx_file_perms;
 allow hal_fingerprint_default vendor_sysfs_display:dir r_dir_perms;
 allow hal_fingerprint_default vendor_sysfs_display:file rw_file_perms;
+allow hal_fingerprint_default vendor_sysfs_display:lnk_file r_file_perms;
 allow hal_fingerprint_default vendor_sysfs_graphics:dir r_dir_perms;
 allow hal_fingerprint_default vendor_sysfs_graphics:file rw_file_perms;
 allow hal_fingerprint_default vendor_sysfs_spss:dir r_dir_perms;
