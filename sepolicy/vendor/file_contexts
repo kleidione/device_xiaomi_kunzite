@@ -72,6 +72,7 @@
 /vendor/bin/hw/vendor\.dolby\.dms\.service                     u:object_r:hal_aidl_dms_default_exec:s0
 
 # Fingerprint
+/data/vendor/fpdump(/.*)? u:object_r:fpdump_vendor_data_file:s0
 /dev/xiaomi-fp u:object_r:vendor_fingerprint_device:s0
 /mnt/vendor/persist/goodix(/.*)? u:object_r:fingerprint_vendor_data_file:s0
 /vendor/bin/hw/android\.hardware\.biometrics\.fingerprint-service\.xiaomi u:object_r:hal_fingerprint_default_exec:s0
