@@ -51,6 +51,7 @@ class LightCalibration {
                           std::vector<LeakageRow>* out);
     bool loadCoefficients(const std::string& dir);
     bool loadConfigCoefficients(const std::string& path);
+    void applyCoefficients(const float* v);
     void loadCwbInfo(const std::string& path);
     std::vector<LeakageRow> mLeakage;
     std::vector<LeakageRow> mFullWhite;
@@ -61,4 +62,5 @@ class LightCalibration {
     float mIrThreshold = 0.f;
     float mScale = 1.f;
     bool mValid = false;
+    const char* mCoefSource = "none";
 };

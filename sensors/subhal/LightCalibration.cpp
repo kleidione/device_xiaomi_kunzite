@@ -10,8 +10,8 @@
 #include <android-base/properties.h>
 #include <android-base/strings.h>
 
-#include <dirent.h>
 #include <algorithm>
+#include <cctype>
 #include <cstdlib>
 
 namespace {
@@ -48,14 +48,36 @@ const char* configForPanel() {
     return config;
 }
 constexpr char kRegistryDir[] = "/mnt/vendor/persist/sensors/registry/registry";
+// kunzite uses the sip1328 under-display ALS. Its registry entries are indexed ("0".."13"),
+// not named, and its scale lives in sip1328_platform.als.fac_cal as "lux_scale".
+constexpr char kCoefFile[] = "sip1328_platform.coefficient";
+constexpr char kFacCalFile[] = "sip1328_platform.als.fac_cal";
+constexpr size_t kCoefCount = 7;
 constexpr float kLuxDivisor = 25600.0f;
 
+// Finds `"key"` only when it is used as a JSON key (followed by ':'), so a value such as
+// "ver":"2" is never mistaken for the key "2".
+size_t findKey(const std::string& blob, const std::string& key, size_t from = 0) {
+    const std::string needle = "\"" + key + "\"";
+    for (size_t k = blob.find(needle, from); k != std::string::npos;
+         k = blob.find(needle, k + 1)) {
+        size_t after = k + needle.size();
+        while (after < blob.size() && isspace(static_cast<unsigned char>(blob[after]))) {
+            after++;
+        }
+        if (after < blob.size() && blob[after] == ':') {
+            return k;
+        }
+    }
+    return std::string::npos;
+}
+
 bool findFloat(const std::string& blob, const std::string& key, float* out) {
-    size_t k = blob.find("\"" + key + "\"");
+    size_t k = findKey(blob, key);
     if (k == std::string::npos) {
         return false;
     }
-    size_t d = blob.find("\"data\"", k);
+    size_t d = findKey(blob, "data", k);
     if (d == std::string::npos) {
         return false;
     }
@@ -92,14 +114,26 @@ bool LightCalibration::loadConfigCoefficients(const std::string& path) {
     if (parts.size() < 7) {
         return false;
     }
-    mCoef0A = strtof(parts[0].c_str(), nullptr);
-    mCoef1A = strtof(parts[1].c_str(), nullptr);
-    mDgfA = strtof(parts[2].c_str(), nullptr);
-    mCoef0B = strtof(parts[3].c_str(), nullptr);
-    mCoef1B = strtof(parts[4].c_str(), nullptr);
-    mDgfB = strtof(parts[5].c_str(), nullptr);
-    mIrThreshold = strtof(parts[6].c_str(), nullptr);
+    float v[kCoefCount];
+    for (size_t i = 0; i < kCoefCount; i++) {
+        v[i] = strtof(parts[i].c_str(), nullptr);
+    }
+    applyCoefficients(v);
     return true;
+}
+
+// Single place that defines what each of the 7 channel coefficients means. The order is the
+// one used by both the registry ("0".."6") and the panel config's "coef_data".
+// ASSUMPTION (not confirmed by vendor docs): [coef0_a, coef1_a, coef0_b, coef1_b, ir_thr,
+// dgf_a, dgf_b]. Validate against a reference lux meter and change only this function.
+void LightCalibration::applyCoefficients(const float* v) {
+    mCoef0A = v[0];
+    mCoef1A = v[1];
+    mCoef0B = v[2];
+    mCoef1B = v[3];
+    mIrThreshold = v[4];
+    mDgfA = v[5];
+    mDgfB = v[6];
 }
 
 LightCalibration::LightCalibration() {
@@ -119,11 +153,26 @@ LightCalibration::LightCalibration() {
             LOG(ERROR) << "no ALS coefficients anywhere, light sensor will not report";
             return;
         }
+        mCoefSource = "panel config (scale not available, using 1)";
+    }
+
+    // lux per unit of net ALS for the common case (ir ~ 0). Refuse absurd values instead of
+    // reporting millions of lux and pinning the display at maximum brightness.
+    const float factor = mCoef0A / kLuxDivisor * mDgfA * mScale;
+    if (!(mDgfA > 0.f && mDgfA < 100.f) || !(mDgfB > 0.f && mDgfB < 100.f) ||
+        !(factor > 0.001f && factor < 1000.f)) {
+        LOG(ERROR) << "implausible ALS coefficients from " << mCoefSource << ": coef_0_a=" << mCoef0A
+                   << " dgf_a=" << mDgfA << " dgf_b=" << mDgfB << " scale=" << mScale
+                   << " lux/unit=" << factor << ", light sensor will not report";
+        return;
     }
 
     mValid = true;
-    LOG(INFO) << "calibration loaded: " << mLeakage.size() << " leakage rows, coef_0_a=" << mCoef0A
-              << " dgf_a=" << mDgfA << " ir_thr=" << mIrThreshold << " scale=" << mScale;
+    LOG(INFO) << "calibration loaded from " << mCoefSource << ": " << mLeakage.size()
+              << " leakage rows, coef_0_a=" << mCoef0A << " coef_1_a=" << mCoef1A
+              << " coef_0_b=" << mCoef0B << " coef_1_b=" << mCoef1B << " ir_thr=" << mIrThreshold
+              << " dgf_a=" << mDgfA << " dgf_b=" << mDgfB << " scale=" << mScale
+              << " lux/unit=" << factor;
 }
 
 bool LightCalibration::loadLeakageTable(const std::string& path, const std::string& key,
@@ -237,39 +286,31 @@ float LightCalibration::panelGamma(int32_t) const {
 }
 
 bool LightCalibration::loadCoefficients(const std::string& dir) {
-    std::unique_ptr<DIR, decltype(&closedir)> d(opendir(dir.c_str()), closedir);
-    if (!d) {
-        LOG(ERROR) << "failed to open " << dir;
+    std::string blob;
+    if (!android::base::ReadFileToString(dir + "/" + kCoefFile, &blob)) {
+        LOG(WARNING) << "cannot read " << dir << "/" << kCoefFile;
         return false;
     }
 
-    std::string customCal, facCal;
-    while (struct dirent* e = readdir(d.get())) {
-        std::string name(e->d_name);
-        if (name.find("als.custom_cal") != std::string::npos) {
-            customCal = dir + "/" + name;
-        } else if (name.find("als.fac_cal") != std::string::npos) {
-            facCal = dir + "/" + name;
+    float v[kCoefCount];
+    for (size_t i = 0; i < kCoefCount; i++) {
+        if (!findFloat(blob, std::to_string(i), &v[i])) {
+            LOG(ERROR) << kCoefFile << " is missing coefficient " << i;
+            return false;
         }
     }
 
-    std::string blob;
-    if (customCal.empty() || !android::base::ReadFileToString(customCal, &blob)) {
-        return false;
+    float scale = 1.f;
+    std::string facBlob;
+    if (android::base::ReadFileToString(dir + "/" + kFacCalFile, &facBlob) &&
+        findFloat(facBlob, "lux_scale", &scale)) {
+        mScale = scale;
+    } else {
+        LOG(WARNING) << "no lux_scale in " << kFacCalFile << ", using " << mScale;
     }
 
-    bool ok = findFloat(blob, "coef_0_a", &mCoef0A) && findFloat(blob, "coef_1_a", &mCoef1A) &&
-              findFloat(blob, "dgf_a", &mDgfA) && findFloat(blob, "coef_0_b", &mCoef0B) &&
-              findFloat(blob, "coef_1_b", &mCoef1B) && findFloat(blob, "dgf_b", &mDgfB) &&
-              findFloat(blob, "ir_thr", &mIrThreshold);
-    if (!ok) {
-        LOG(ERROR) << "custom_cal is missing coefficients";
-        return false;
-    }
-
-    if (!facCal.empty() && android::base::ReadFileToString(facCal, &blob)) {
-        findFloat(blob, "scale", &mScale);
-    }
+    applyCoefficients(v);
+    mCoefSource = "registry";
     return true;
 }
 
