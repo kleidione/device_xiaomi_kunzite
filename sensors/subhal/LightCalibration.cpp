@@ -51,6 +51,11 @@ const char* configForPanel() {
 }
 constexpr char kRegistryDir[] = "/mnt/vendor/persist/sensors/registry/registry";
 constexpr float kLuxDivisor = 25600.0f;
+// Empirical gain applied on top of the calibrated lux. With the sip1328 coefficients from the
+// panel config the conversion comes out roughly 8x too low (about 0.2 lux per ALS unit), which
+// made auto-brightness too dim. Chosen by eye in a daylit room, NOT measured against a lux meter:
+// revisit once a reference reading is available.
+constexpr float kLuxGain = 8.0f;
 
 bool findFloat(const std::string& blob, const std::string& key, float* out) {
     size_t k = blob.find("\"" + key + "\"");
@@ -337,7 +342,7 @@ float LightCalibration::toLux(float als, float ir, int32_t brightness) const {
     float coef0 = useB ? mCoef0B : mCoef0A;
     float coef1 = useB ? mCoef1B : mCoef1A;
     float dgf = useB ? mDgfB : mDgfA;
-    float lux = (coef0 * alsNet + coef1 * irNet) / kLuxDivisor * dgf * mScale;
+    float lux = (coef0 * alsNet + coef1 * irNet) / kLuxDivisor * dgf * mScale * kLuxGain;
     return std::max(lux, 0.f);
 }
 
@@ -346,5 +351,5 @@ void LightCalibration::dump() const {
               << " fullwhite_rows=" << mFullWhite.size() << " cwb=" << mCwb.valid
               << " coef0A=" << mCoef0A << " coef1A=" << mCoef1A << " dgfA=" << mDgfA
               << " coef0B=" << mCoef0B << " coef1B=" << mCoef1B << " dgfB=" << mDgfB
-              << " irThr=" << mIrThreshold << " scale=" << mScale;
+              << " irThr=" << mIrThreshold << " scale=" << mScale << " gain=" << kLuxGain;
 }
