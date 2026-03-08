@@ -10,6 +10,7 @@
 #include <android-base/logging.h>
 #include <android-base/unique_fd.h>
 
+#include <atomic>
 #include <poll.h>
 #include <sys/ioctl.h>
 #include <fstream>
@@ -45,6 +46,11 @@
 #define DISP_FEATURE_PATH "/dev/mi_display/disp_feature"
 
 #define FOD_PRESS_STATUS_PATH "/sys/class/touch/touch_dev/fod_press_status"
+
+// vendorCode values from onAcquired()
+#define VENDOR_ACQUIRED_WAITING_FOR_FINGER 21
+#define VENDOR_ACQUIRED_FINGER_DOWN 22
+#define VENDOR_ACQUIRED_FINGER_UP 23
 
 typedef struct {
     int8_t touch_id;
@@ -175,6 +181,11 @@ class XiaomiKunziteUdfpsHandler : public UdfpsHandler {
     }
 
     void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
+        // onFingerDown() runs on the binder/input thread and can race with
+        // authentication completing on the HAL callback thread. Skip if
+        // this attempt already succeeded (see mAuthSuccess below).
+        if (mAuthSuccess.load(std::memory_order_acquire)) return;
+
         LOG(INFO) << __func__;
         
         // Notify HAL about finger press
@@ -238,13 +249,27 @@ class XiaomiKunziteUdfpsHandler : public UdfpsHandler {
          * 22: finger down
          * 23: finger up
          */
-        if (vendorCode == 21) {
+        if (vendorCode == VENDOR_ACQUIRED_WAITING_FOR_FINGER) {
+            mAuthSuccess.store(false, std::memory_order_release);
             setFodStatus(FOD_STATUS_ON);
         }
     }
 
+    void onAuthenticationSucceeded() {
+        LOG(INFO) << __func__;
+        mAuthSuccess.store(true, std::memory_order_release);
+        onFingerUp();
+    }
+
+    void onAuthenticationFailed() {
+        LOG(INFO) << __func__;
+        mAuthSuccess.store(false, std::memory_order_release);
+        onFingerUp();
+    }
+
     void cancel() {
         LOG(INFO) << __func__;
+        mAuthSuccess.store(false, std::memory_order_release);
         setFodStatus(FOD_STATUS_OFF);
         
         // Turn off HBM on cancel
@@ -259,6 +284,10 @@ class XiaomiKunziteUdfpsHandler : public UdfpsHandler {
     fingerprint_device_t* mDevice;
     android::base::unique_fd touch_fd_;
     android::base::unique_fd disp_fd_;
+
+    // Accessed from both the binder/input thread and the HAL callback
+    // thread, hence atomic rather than a plain bool.
+    std::atomic<bool> mAuthSuccess{false};
 
     void setFodStatus(int value) {
         ioctl(touch_fd_.get(), TOUCH_IOC_SELECT_TOUCH_ID, MI_DISP_PRIMARY);
