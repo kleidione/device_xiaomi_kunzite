@@ -5,6 +5,8 @@ binder_use(hal_aidl_dms_server)
 hal_server_domain(hal_aidl_dms_default, hal_aidl_dms)
 init_daemon_domain(hal_aidl_dms_default)
 
+get_prop(hal_aidl_dms_default, vendor_audio_prop)
+
 add_service(hal_aidl_dms_server, hal_aidl_dms_service)
 binder_call(hal_aidl_dms_server, hal_aidl_dms_client)
 binder_call(hal_aidl_dms_client, hal_aidl_dms_server)
