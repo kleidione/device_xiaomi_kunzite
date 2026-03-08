@@ -102,6 +102,8 @@ class SensorsSubHal : public ISensorsSubHal, public IHalProxyCallback {
     std::chrono::steady_clock::time_point last_forward_{};
     std::chrono::steady_clock::time_point last_starve_log_{};
     std::vector<float> lux_samples_;
+    int32_t last_sample_brightness_{-1};
+    float lux_smoothed_{-1.f};
     uint64_t forward_count_{0};
     uint64_t sample_tick_{0};
     float last_logged_lux_{-1.f};
