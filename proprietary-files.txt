@@ -950,6 +950,7 @@ vendor/lib64/vendor.qti.hardware.qseecom@1.0.so
 
 # DRM Widevine
 odm/lib64/libwvkeybox.so
+vendor/apex/com.google.android.widevine.nonupdatable.apex
 vendor/lib64/liboemcrypto.so
 vendor/lib64/libtrustedapploader.so
 
