@@ -269,6 +269,10 @@ vendor.usb.rndis.func.name=gsi
 vendor.usb.use_ffs_mtp=1
 vendor.usb.use_gadget_hal=1
 
+# Widevine
+vendor.wv.oemcrypto.debug.enable_external_display_check=false
+vendor.wv.oemcrypto.debug.enable_prov40=true
+
 # Wi-Fi
 ro.hardware.wlan.chip=wcn3988
 ro.hardware.wlan.dbs=0
