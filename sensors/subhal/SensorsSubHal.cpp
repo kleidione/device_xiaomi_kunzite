@@ -53,15 +53,24 @@ static constexpr auto kForwardInterval = std::chrono::milliseconds(1000);
 static constexpr int kCwbEveryNSamples = 3;
 static constexpr size_t kMaxLuxSamples = 64;
 static constexpr uint64_t kForwardLogEvery = 60;
-// A sample taken while the backlight is still moving cannot be compensated reliably: the leakage
-// is computed from the brightness read at event time, not at sampling time.
-static constexpr int32_t kSettledDbvDelta = 2;
-// Smoothing of the forwarded lux. Falling is slower than rising so that a brief dip in the
-// reading does not drop the display brightness at once.
-static constexpr float kSmoothUp = 0.5f;
-static constexpr float kSmoothDown = 0.15f;
-// After this long without a forwarded value (screen off, sensor disabled) start from scratch.
-static constexpr auto kStaleGap = std::chrono::seconds(5);
+// A sample taken while the backlight is moving cannot be compensated reliably: the leakage is
+// computed from the brightness read at event time, but the sensor still sees the previous panel
+// level. Any DBV change larger than kSettledDbvDelta opens a hold-off window during which samples
+// are discarded. This is time based so that a long backlight ramp does not starve the output.
+static constexpr int32_t kSettledDbvDelta = 8;
+static constexpr auto kDbvHoldoff = std::chrono::milliseconds(600);
+// Smoothing of the forwarded lux, done in the log domain with time constants (seconds) so that
+// the response is proportional (fast at high lux, no long linear tail) and independent of the
+// forward interval. Falling is slower than rising so that a brief dip does not drop the display
+// brightness at once.
+static constexpr float kTauUp = 1.0f;
+static constexpr float kTauDown = 2.0f;
+static constexpr float kMaxDt = 2.0f;
+// Floor for the reported lux: sets the dimmest brightness auto-brightness will ask for in the
+// dark, so the screen never goes fully dim. Raise it if still too dark, lower it if too bright.
+static constexpr float kMinLux = 4.0f;
+// Smoothing of the screen content level coming from the writeback capture.
+static constexpr float kContentAlpha = 0.3f;
 
 bool IsDefaultLightSensor(const android::hardware::sensors::V2_1::SensorInfo& sensor) {
     return sensor.type == SensorType::LIGHT && !IsRawAmbientLightSensor(sensor);
@@ -137,6 +146,7 @@ Return<Result> SensorsSubHal::activate(int32_t sensor_handle, bool enabled) {
 
         if (enabled && (display_on_.load() || currentBrightness() > 0)) {
             display_on_.store(true);
+            reset_smoothing_.store(true);
             sensor_currently_enabled_.store(true);
             return impl_->activate(real_handle, enabled);
         }
@@ -257,6 +267,7 @@ void SensorsSubHal::setDisplayOn(bool on) {
 
     std::lock_guard<std::mutex> lock(display_mutex_);
     if (on && requested_enabled_.load() && gated_raw_handle_ != -1) {
+        reset_smoothing_.store(true);
         impl_->activate(gated_raw_handle_, true);
         sensor_currently_enabled_.store(true);
     } else if (!on && sensor_currently_enabled_.load() && gated_raw_handle_ != -1) {
@@ -300,7 +311,15 @@ void SensorsSubHal::reportThread() {
                 auto& cwb = CwbCapture::getInstance();
                 cwb.configure(info, light_cal_.panelGamma(brightness));
                 if (cwb.request()) {
-                    light_cal_.setContentLevel(cwb.contentLevel());
+                    const float c = cwb.contentLevel();
+                    if (c >= 0.f) {
+                        content_smoothed_ = content_smoothed_ < 0.f
+                                                    ? c
+                                                    : content_smoothed_ +
+                                                              kContentAlpha *
+                                                                      (c - content_smoothed_);
+                        light_cal_.setContentLevel(content_smoothed_);
+                    }
                 }
             }
         }
@@ -350,51 +369,74 @@ void SensorsSubHal::postEvents(const std::vector<Event>& events, ScopedWakelock 
                 const float als = e.u.vec4.x;
                 const float ir = e.u.vec4.y;
                 const int32_t brightness = currentBrightness();
-                const float lux = light_cal_.toLux(als, ir, brightness);
+                float lux = light_cal_.toLux(als, ir, brightness);
                 if (lux < 0.f) {
                     continue;
                 }
-                const bool settled = last_sample_brightness_ < 0 ||
-                                     std::abs(brightness - last_sample_brightness_) <=
-                                             kSettledDbvDelta;
+                lux = std::max(lux, kMinLux);
+                const auto now = std::chrono::steady_clock::now();
+                if (reset_smoothing_.load()) {
+                    // sensor was just (re)enabled: drop stale state
+                    lux_samples_.clear();
+                    last_sample_brightness_ = -1;
+                    last_dbv_change_ = {};
+                }
+                if (last_sample_brightness_ >= 0 &&
+                    std::abs(brightness - last_sample_brightness_) > kSettledDbvDelta) {
+                    last_dbv_change_ = now;
+                }
                 last_sample_brightness_ = brightness;
+                const bool settled = now - last_dbv_change_ >= kDbvHoldoff;
                 if (settled && lux_samples_.size() < kMaxLuxSamples) {
                     lux_samples_.push_back(lux);
                 }
-                const auto now = std::chrono::steady_clock::now();
-                if (now - last_forward_ >= kForwardInterval && !lux_samples_.empty()) {
-                    const bool stale = now - last_forward_ > kStaleGap;
+                if (now - last_forward_ >= kForwardInterval) {
+                    float dt = std::chrono::duration<float>(now - last_forward_).count();
+                    dt = std::min(dt, kMaxDt);
                     last_forward_ = now;
-                    auto mid = lux_samples_.begin() + lux_samples_.size() / 2;
-                    std::nth_element(lux_samples_.begin(), mid, lux_samples_.end());
-                    const float median = *mid;
-                    lux_samples_.clear();
+                    const bool reset = reset_smoothing_.exchange(false);
 
-                    if (stale || lux_smoothed_ < 0.f) {
-                        lux_smoothed_ = median;
-                    } else {
-                        const float alpha = median >= lux_smoothed_ ? kSmoothUp : kSmoothDown;
-                        lux_smoothed_ += alpha * (median - lux_smoothed_);
+                    float median = lux_smoothed_;
+                    if (!lux_samples_.empty()) {
+                        auto mid = lux_samples_.begin() + lux_samples_.size() / 2;
+                        std::nth_element(lux_samples_.begin(), mid, lux_samples_.end());
+                        median = *mid;
+                        lux_samples_.clear();
+
+                        if (reset || lux_smoothed_ < 0.f) {
+                            lux_smoothed_ = median;
+                        } else {
+                            const float tau = median >= lux_smoothed_ ? kTauUp : kTauDown;
+                            const float alpha = 1.f - std::exp(-dt / tau);
+                            const float ls = std::log1p(lux_smoothed_);
+                            const float lm = std::log1p(median);
+                            lux_smoothed_ = std::expm1(ls + alpha * (lm - ls));
+                        }
                     }
 
-                    auto event_copy = e;
-                    event_copy.sensorHandle = alias_handle;
-                    event_copy.sensorType = SensorType::LIGHT;
-                    event_copy.u.scalar = lux_smoothed_;
-                    LOG(VERBOSE) << "light: als=" << als << " ir=" << ir << " dbv=" << brightness
-                                 << " -> " << median << " lux, smoothed " << lux_smoothed_;
-                    if (last_logged_lux_ < 0.f ||
-                        std::fabs(lux_smoothed_ - last_logged_lux_) >
-                                std::max(1.f, last_logged_lux_ * 0.1f)) {
-                        LOG(INFO) << "light: als=" << als << " ir=" << ir << " dbv=" << brightness
-                                  << " -> " << lux_smoothed_ << " lux (raw " << median << ")";
-                        last_logged_lux_ = lux_smoothed_;
-                    }
-                    forwarded_events.emplace_back(std::move(event_copy));
-                    if (++forward_count_ % kForwardLogEvery == 0) {
-                        LOG(INFO) << "forwarded " << forward_count_ << " lux events, last "
-                                  << lux_smoothed_ << " lux (raw " << median << ", dbv "
-                                  << brightness << ")";
+                    // While the backlight is moving there are no valid samples: keep reporting
+                    // the last value so the framework is not starved and nothing resets.
+                    if (lux_smoothed_ >= 0.f) {
+                        auto event_copy = e;
+                        event_copy.sensorHandle = alias_handle;
+                        event_copy.sensorType = SensorType::LIGHT;
+                        event_copy.u.scalar = lux_smoothed_;
+                        LOG(VERBOSE) << "light: als=" << als << " ir=" << ir << " dbv=" << brightness
+                                     << " -> " << median << " lux, smoothed " << lux_smoothed_;
+                        if (last_logged_lux_ < 0.f ||
+                            std::fabs(lux_smoothed_ - last_logged_lux_) >
+                                    std::max(1.f, last_logged_lux_ * 0.1f)) {
+                            LOG(INFO) << "light: als=" << als << " ir=" << ir
+                                      << " dbv=" << brightness << " -> " << lux_smoothed_
+                                      << " lux (raw " << median << ")";
+                            last_logged_lux_ = lux_smoothed_;
+                        }
+                        forwarded_events.emplace_back(std::move(event_copy));
+                        if (++forward_count_ % kForwardLogEvery == 0) {
+                            LOG(INFO) << "forwarded " << forward_count_ << " lux events, last "
+                                      << lux_smoothed_ << " lux (raw " << median << ", dbv "
+                                      << brightness << ")";
+                        }
                     }
                 }
                 std::lock_guard<std::mutex> lock(report_mutex_);

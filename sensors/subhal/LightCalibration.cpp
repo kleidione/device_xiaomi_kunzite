@@ -335,7 +335,13 @@ float LightCalibration::toLux(float als, float ir, int32_t brightness) const {
     if (!mValid) {
         return -1.f;
     }
-    float alsNet = std::max(als - leakageAls(brightness), 0.f);
+    const float leakA = leakageAls(brightness);
+    float alsNet = std::max(als - leakA, 0.f);
+    // A residual below ~5% of the leakage is compensation noise (amplified by kLuxGain), not
+    // real light: treat it as darkness instead of letting it feed back into the backlight.
+    if (alsNet < 0.05f * leakA) {
+        alsNet = 0.f;
+    }
     float irNet = std::max(ir - leakageIr(brightness), 0.f);
     float ratio = als > 0.f ? (ir / als) : 0.f;
     bool useB = ratio > mIrThreshold;
