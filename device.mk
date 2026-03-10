@@ -234,6 +234,7 @@ PRODUCT_PACKAGES += \
     FrameworksOverlayKunzite \
     LineageApertureAppCommon \
     NfcOverlayKunzite \
+    NexusLauncherDeviceOverlayKunzite \
     SecureElementOverlayKunzite \
     SettingsOverlayKunzite \
     SystemUIOverlayKunzite \
