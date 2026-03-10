@@ -28,3 +28,6 @@ genfscon sysfs /devices/platform/soc/ac0000.qcom,qupv3_1_geni_se/a80000.i2c/i2c-
 
 # Walt
 genfscon proc /sys/walt u:object_r:proc_walt:s0
+
+# Walan
+genfscon sysfs /devices/platform/soc/22800000.qcom,icnss u:object_r:vendor_sysfs_wlan:s0

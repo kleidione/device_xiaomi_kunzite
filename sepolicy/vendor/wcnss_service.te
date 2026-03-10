@@ -1,0 +1,4 @@
+allow vendor_wcnss_service vendor_sysfs_wlan:dir search;
+allow vendor_wcnss_service vendor_sysfs_wlan:file r_file_perms;
+
+set_prop(vendor_wcnss_service, vendor_wifi_prop)

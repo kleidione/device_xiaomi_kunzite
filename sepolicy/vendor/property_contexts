@@ -2,6 +2,9 @@
 persist.vendor.audio.cloud u:object_r:vendor_audio_cloud_ctrl_mi_prop:s0
 vendor.audio.usb_cctoggle u:object_r:vendor_audio_prop:s0 exact string
 
+# Bluetooth
+persist.vendor.bt.a2dp_offload_cap u:object_r:vendor_bluetooth_prop:s0
+
 # Camera
 persist.vendor.miface.* u:object_r:vendor_miface_prop:s0
 ro.boot.camera.config u:object_r:vendor_camera_sensor_prop:s0
@@ -52,17 +55,21 @@ vendor.sys.feature_state u:object_r:vendor_payment_security_prop:s0
 vendor.sys.rpmb_state u:object_r:vendor_payment_security_prop:s0
 
 # RIL
+persist.vendor.oem.country u:object_r:vendor_oem_prop:s0
 persist.vendor.radio.imei u:object_r:vendor_deviceid_prop:s0
 persist.vendor.radio.meid u:object_r:vendor_deviceid_prop:s0
 ro.vendor.miui.build.region u:object_r:vendor_miui_region_prop:s0
 ro.vendor.miui.singlesim u:object_r:vendor_miui_singlesim_prop:s0
 ro.vendor.oem.boot_completed u:object_r:vendor_deviceid_prop:s0
+ro.vendor.oem.btmac u:object_r:vendor_oem_prop:s0
 ro.vendor.oem.ctacode u:object_r:vendor_sno_prop:s0
 ro.vendor.oem.imei u:object_r:vendor_deviceid_prop:s0
 ro.vendor.oem.meid u:object_r:vendor_deviceid_prop:s0
 ro.vendor.oem.psno u:object_r:vendor_sno_prop:s0
+ro.vendor.oem.sarnv_check u:object_r:vendor_oem_prop:s0
 ro.vendor.oem.serialno u:object_r:vendor_deviceid_prop:s0
 ro.vendor.oem.sno u:object_r:vendor_sno_prop:s0
+ro.vendor.oem.wifimac u:object_r:vendor_oem_prop:s0
 
 # Sensor
 persist.vendor.sensors.used.framebuffer u:object_r:vendor_usedframebuffer_prop:s0
