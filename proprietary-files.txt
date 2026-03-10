@@ -301,6 +301,8 @@ vendor/lib64/libanc_single_rt_bokeh.so
 vendor/lib64/libbitmlengine.so
 vendor/lib64/libbitmlenginev2.so
 vendor/lib64/libc++_shared.so
+vendor/lib64/libcalculator.so
+vendor/lib64/libcalculator_htp.so
 vendor/lib64/libcamera_nn_stub.so
 vendor/lib64/libcamera_scene.so
 vendor/lib64/libcameraopt.so
@@ -322,6 +324,7 @@ vendor/lib64/libcamxtintlessalgo.so
 vendor/lib64/libcc_fd.so
 vendor/lib64/libchilog.so
 vendor/lib64/libcom.qti.chinodeutils.so
+vendor/lib64/libcom.xiaomi.metadatautils.so
 vendor/lib64/libcom.xiaomi.pluginutils.so
 vendor/lib64/libdepthcomputation.so
 vendor/lib64/libeepromcutter.so
