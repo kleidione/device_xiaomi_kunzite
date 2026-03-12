@@ -247,3 +247,6 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Include the proprietary files BoardConfig.
 include vendor/xiaomi/kunzite/BoardConfigVendor.mk
+
+# Vendor MiuiCamera
+-include device/xiaomi/kunzite-miuicamera/BoardConfig.mk
