@@ -7,6 +7,7 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+TARGET_SUPPORTS_QUICK_TAP := false
 TARGET_SCREEN_WIDTH := 1080
 
 # Inherit some common PixelOS stuff.
