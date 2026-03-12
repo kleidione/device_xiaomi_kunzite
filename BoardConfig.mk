@@ -116,7 +116,7 @@ PRODUCT_COPY_FILES += \
 	$(PREBUILT_PATH)/images/kernel:kernel
 
 # Kernel modules
-GKI_VERSION := 6.6.77-android15-8-g4a507830d890-ab13636293-4k
+GKI_VERSION := 6.6.118-android15-8-ge56cf6b09cca-ab15511674-4k
 DLKM_MODULES_PATH := $(PREBUILT_PATH)/modules/vendor_dlkm
 RAMDISK_MODULES_PATH := $(PREBUILT_PATH)/modules/vendor_boot
 SYSTEM_DLKM_MODULES_PATH := $(PREBUILT_PATH)/modules/system_dlkm/$(GKI_VERSION)
@@ -194,7 +194,7 @@ BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 
 # Security patch level
-VENDOR_SECURITY_PATCH := 2026-07-01
+VENDOR_SECURITY_PATCH := 2026-09-01
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
