@@ -99,7 +99,8 @@
             "Path": "/proc/sys/walt/sched_upmigrate",
             "Values": [
                 "71",
-                "50"
+                "50",
+                "60"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -109,7 +110,8 @@
             "Path": "/proc/sys/walt/sched_downmigrate",
             "Values": [
                 "65",
-                "40"
+                "40",
+                "50"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -119,7 +121,8 @@
             "Path": "/sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_load",
             "Values": [
                 "85",
-                "99"
+                "99",
+                "75"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -254,6 +257,36 @@
             "PowerHint": "INTERACTION",
             "Node": "sysDevicesSystemCpuCpu4CoreCtlEnable",
             "Value": "0",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy4WaltAdaptiveHighFreq",
+            "Value": "1651200",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy4WaltAdaptiveLowFreq",
+            "Value": "1344000",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy0WaltHispeedLoad",
+            "Value": "75",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "procSysWaltSchedUpmigrate",
+            "Value": "60",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "procSysWaltSchedDownmigrate",
+            "Value": "50",
             "Duration": 0
         },
         {
