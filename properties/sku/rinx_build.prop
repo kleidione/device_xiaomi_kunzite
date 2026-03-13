@@ -4,7 +4,7 @@ bluetooth.device.default_name=REDMI Note 15 SE 5G
 # Device
 ro.product.odm.brand=Redmi
 ro.product.odm.model=26022PCACI
-ro.product.odm.name=kunzite
+ro.product.odm.name=kunzite_x_in
 
 # USB
 vendor.usb.product_string=REDMI Note 15 SE 5G

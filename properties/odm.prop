@@ -76,4 +76,3 @@ persist.vendor.radio.dynamic_sar=1
 # SKU properties
 ro.product.property_source_order=odm,product,vendor,system_ext,system
 import /odm/etc/${ro.boot.product.hardware.sku}_build.prop
-import /odm/etc/${ro.boot.product.hardware.sku}_${ro.boot.ptcountrycode}_build.prop
