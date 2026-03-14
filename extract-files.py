@@ -86,8 +86,6 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.so': blob_fixup()
         .replace_needed('android.hardware.graphics.allocator-V1-ndk.so', 'android.hardware.graphics.allocator-V2-ndk.so')
         .replace_needed('android.hardware.camera.common-V2-ndk.so', 'android.hardware.camera.common-V1-ndk.so'),
-    'vendor/lib64/libcameraopt.so': blob_fixup()
-        .add_needed('libprocessgroup_shim.so'),
     (
         'odm/bin/hw/vendor.xiaomi.hw.touchfeature-service',
         'vendor/lib64/libsensorndkbridge.so',
