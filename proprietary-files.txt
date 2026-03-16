@@ -89,6 +89,12 @@ vendor/etc/r_submix_audio_policy_configuration.xml
 vendor/etc/stub_audio_policy_configuration.xml
 vendor/etc/usecaseKvManager.xml
 
+# Audio configs (SIPA)
+vendor/etc/sixth_param/sixth_param_boost0.txt
+vendor/etc/sixth_param/sixth_param_boost1.txt
+vendor/etc/sixth_param/sixth_param_boost2.txt
+vendor/etc/sixth_wrapper_cfg.xml
+
 # Audio firmware
 vendor/firmware/frsm-spk1.bin
 vendor/firmware/frsm-spk2.bin
