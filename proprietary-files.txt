@@ -1005,7 +1005,6 @@ vendor/bin/qguard
 vendor/etc/init/qdcmss.rc
 vendor/etc/init/qguard.rc
 vendor/etc/qguard.json
-vendor/etc/snapdragon_color_libs_config.xml
 vendor/lib64/libdigital-dimming.so
 vendor/lib64/libdpps.so
 vendor/lib64/libmemutils.so
