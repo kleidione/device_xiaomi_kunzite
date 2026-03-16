@@ -112,6 +112,11 @@ blob_fixups: blob_fixups_user_type = {
         .add_line_if_missing('sched_get_priority_min: 1')
         .add_line_if_missing('sched_get_priority_max: 1'),
     (
+        'vendor/etc/seccomp_policy/qesdksec.policy',
+        'vendor/etc/seccomp_policy/qsap_qapeservice.policy',
+    ): blob_fixup()
+        .add_line_if_missing('lseek: 1'),
+    (
         'vendor/bin/chimcxtest',
         'vendor/bin/chiofflinepostproctest',
         'vendor/lib64/camera/components/com.qti.node.dewarp.so',
