@@ -14,4 +14,8 @@ allow hal_audio_default vendor_persist_audio_file:file { rw_file_perms create };
 allow hal_audio_default vendor_persist_sensors_file:dir { open read search write };
 allow hal_audio_default vendor_persist_sensors_file:file { open read };
 
+allow hal_audio_default vendor_sysfs_battery_supply:dir r_dir_perms;
+allow hal_audio_default vendor_sysfs_battery_supply:dir search;
+allow hal_audio_default vendor_sysfs_battery_supply:file rw_file_perms;
+
 dontaudit hal_audio_default default_prop:file read;
