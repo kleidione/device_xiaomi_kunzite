@@ -9,6 +9,7 @@ add_service(hal_camera_server, vendor_hal_offlinecamera_service)
 
 get_prop(hal_camera, vendor_adsprpc_prop)
 get_prop(hal_camera, vendor_camera_sensor_prop)
+get_prop(hal_camera, vendor_soc_id_prop)
 
 hal_attribute_hwservice(hal_camera, vendor_hal_camera_aon_hwservice)
 hal_attribute_hwservice(hal_camera, vendor_hal_camera_postproc_hwservice)
