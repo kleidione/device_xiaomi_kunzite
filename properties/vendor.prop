@@ -157,7 +157,9 @@ ro.vendor.bluetooth.btconfigstore=false
 ro.vendor.bluetooth.csip_qti=true
 
 # Camera
-camera.disable_zsl_mode=1
+camera.disable_zsl_mode=true
+ro.camera.enableCamera1MaxZsl=1
+ro.hardware.camera=xiaomi
 
 # Display
 debug.egl.hw=0
