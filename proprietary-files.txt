@@ -1366,9 +1366,6 @@ vendor/etc/libnfc-tms_RF.conf
 vendor/etc/libnfc-tms_RF_EC2.conf
 vendor/etc/libnfc-tms_RF_GB1.conf
 
-# Public libraries
-vendor/etc/public.libraries.txt
-
 # Peripheral manager
 vendor/bin/pm-proxy
 vendor/bin/pm-service
