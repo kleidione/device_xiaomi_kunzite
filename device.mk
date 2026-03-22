@@ -226,6 +226,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.memtrack-service
 
+# Native libraries whitelist
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+
 # NFC
 $(foreach sku, pgl pgl_ss rgl rgl_ss rsa rsa_ss, \
     $(eval PRODUCT_COPY_FILES += \
