@@ -7,6 +7,13 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+TARGET_BOOT_ANIMATION_RES := 1080
+TARGET_DISABLE_EPPE := true
+TARGET_HAS_UDFPS := true
+TARGET_INCLUDE_ACCORD := false
+TARGET_INCLUDE_BCR := false
+TARGET_SUPPORTS_QUICK_TAP := false
+
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
