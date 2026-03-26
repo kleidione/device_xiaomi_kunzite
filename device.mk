@@ -55,6 +55,7 @@ PRODUCT_PACKAGES += \
     libmemunreachable.vendor \
     libpalipcservice \
     libsndcardparser \
+    libvolumelistener \
     libsoundtriggerhal.qti \
     qtiaudiohalvendorextn
 
