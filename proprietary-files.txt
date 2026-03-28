@@ -1059,6 +1059,7 @@ vendor/etc/display/DPU660.xml
 vendor/etc/display/DPU830.xml
 vendor/etc/display/DPU860.xml
 vendor/etc/display/DPU9__.xml
+vendor/etc/display/advanced_sf_offsets.xml
 vendor/etc/display/camera_alignments.json
 vendor/etc/display/cpu_alignments.json
 vendor/etc/display/default_alignments.json
