@@ -247,7 +247,6 @@ vendor/bin/hw/vendor.qti.camera.provider-service_64
 vendor/bin/nativehaltest
 vendor/bin/ois_cal
 vendor/etc/bpf/cameraBpfGpl.o
-vendor/etc/camera/cameraopt_perf.json
 vendor/etc/cit_config.xml
 vendor/etc/cit_config_depth.xml
 vendor/etc/cit_config_ultra.xml
@@ -1418,8 +1417,6 @@ vendor/etc/init/qesdk-manager.rc
 vendor/etc/init/snapdragon_services.rc
 vendor/etc/seccomp_policy/qesdk.policy
 vendor/etc/seccomp_policy/qesdksec.policy
-vendor/etc/ssg/ta_config.json
-vendor/etc/ssg/tz_whitelist.json
 vendor/etc/vintf/manifest/qesdk-manager.xml
 vendor/etc/vintf/manifest/snapdragon_services.xml
 vendor/lib64/libqesdk2_0.so
@@ -1898,7 +1895,6 @@ vendor/etc/sensors/config/sns_tilt_sw_enabled.json
 vendor/etc/sensors/config/sns_tilt_to_wake.json
 vendor/etc/sensors/config/sns_transport_ppe.json
 vendor/etc/sensors/config/sns_wrist_pedo.json
-vendor/etc/sensors/sns_reg_config
 
 # Sensors ultrasound
 odm/lib64/sensors.ultrasoundproximity.so
@@ -1920,7 +1916,6 @@ vendor/etc/init/init.mi_thermald.rc
 # Thermal engine
 vendor/bin/thermal-engine-v2
 vendor/etc/init/init_thermal-engine-v2.rc
-vendor/etc/thermal-engine.conf
 vendor/lib64/liblmthermallistner.so
 vendor/lib64/libthermalclient.so
 
