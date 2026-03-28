@@ -66,8 +66,6 @@ DEVICE_MANIFEST_FILE += \
     hardware/qcom-caf/sm8450-6.6/audio/primary-hal/configs/parrot/manifest_audio_qti_services.xml
 
 ODM_MANIFEST_SKUS := \
-    pgl pgl_ss \
-    pin pin_ss \
     rcn rcn_ss \
     rgl rgl_ss \
     rin rin_ss rinx rinx_ss \
