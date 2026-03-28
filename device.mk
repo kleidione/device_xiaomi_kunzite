@@ -217,7 +217,7 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.memtrack-service
 
 # NFC
-$(foreach sku, pgl pgl_ss rgl rgl_ss rsa rsa_ss, \
+$(foreach sku, rgl rgl_ss rsa rsa_ss, \
     $(eval PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/configs/permissions/android.hardware.nfc.beam.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/sku_$(sku)/android.hardware.nfc.beam.xml \
         frameworks/native/data/etc/android.hardware.nfc.hce.xml:$(TARGET_COPY_OUT_ODM)/etc/permissions/sku_$(sku)/android.hardware.nfc.hce.xml \
