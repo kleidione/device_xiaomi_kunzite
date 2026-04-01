@@ -203,6 +203,14 @@
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
+        },
+        {
+            "Name": "DoubleTapToWake",
+            "Path": "/proc/tp_gesture",
+            "Values": [
+                "1",
+                "0"
+            ]
         }
     ],
     "Actions": [
@@ -463,6 +471,12 @@
             "Node": "sysKernelMsmPerformanceParametersCpuMinFreq",
             "Value": "0:1497600 1:1497600 2:1497600 3:1497600 4:1900800 5:1900800 6:1900800 7:1900800",
             "Duration": 1000
+        },
+        {
+            "PowerHint": "DOUBLE_TAP_TO_WAKE",
+            "Node": "DoubleTapToWake",
+            "Duration": 0,
+            "Value": "1"
         }
     ]
 }
