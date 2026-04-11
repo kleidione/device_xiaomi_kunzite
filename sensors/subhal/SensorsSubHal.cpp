@@ -322,6 +322,9 @@ void SensorsSubHal::postEvents(const std::vector<Event>& events, ScopedWakelock 
         forwarded_events.emplace_back(e);
         const auto alias_handle = getAliasHandle(e.sensorHandle);
         if (alias_handle != e.sensorHandle) {
+            if (e.u.vec4.x == -1 && e.u.vec4.y == 0 && e.u.vec4.z == 0 && e.u.vec4.w == 0) {
+                continue;
+            }
             auto event_copy = e;
             event_copy.sensorHandle = alias_handle;
             event_copy.sensorType = SensorType::LIGHT;
