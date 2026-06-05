@@ -378,3 +378,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     firmware_wlanmdsp.otaupdate_symlink \
     firmware_WCNSS_qcom_cfg.ini_symlink
+
+# Inherit from the proprietary files makefile.
+$(call inherit-product, vendor/xiaomi/kunzite/kunzite-vendor.mk)

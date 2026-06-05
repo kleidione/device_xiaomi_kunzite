@@ -180,6 +180,9 @@ ENABLE_VENDOR_RIL_SERVICE := true
 # SEPolicy
 include device/qcom/sepolicy_vndr/SEPolicy.mk
 
+# Security patch level
+VENDOR_SECURITY_PATCH := 2026-03-05
+
 # Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
@@ -216,3 +219,6 @@ WIFI_HIDL_FEATURE_AWARE := true
 WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
+
+# Include the proprietary files BoardConfig.
+include vendor/xiaomi/kunzite/BoardConfigVendor.mk
