@@ -69,6 +69,24 @@ PRODUCT_PACKAGES += \
     fstab.default.vendor_ramdisk \
     init.recovery.qcom.rc
 
+PRODUCT_PACKAGES += \
+    init.class_main.sh \
+    init.kernel.post_boot-parrot.sh \
+    init.kernel.post_boot.sh \
+    init.qcom.class_core.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.post_boot.sh \
+    init.qcom.sh \
+    init.qcrild.sh
+
+PRODUCT_PACKAGES += \
+    charger_fw_fstab.qti \
+    init.qcom.factory.rc \
+    init.qcom.rc \
+    init.target.rc \
+    ueventd-odm.rc \
+    ueventd-qcom.rc
+
 # Keymint
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.device_id_attestation.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.device_id_attestation.xml \
