@@ -122,41 +122,6 @@ class XiaomiKunziteUdfpsHandler : public UdfpsHandler {
         touch_fd_ = android::base::unique_fd(open(TOUCH_DEV_PATH, O_RDWR));
         disp_fd_ = android::base::unique_fd(open(DISP_FEATURE_PATH, O_RDWR));
 
-        // Thread to notify fingeprint hwmodule about fod presses
-        std::thread([this]() {
-            int fd = open(FOD_PRESS_STATUS_PATH, O_RDONLY);
-            if (fd < 0) {
-                LOG(ERROR) << "failed to open " << FOD_PRESS_STATUS_PATH << " , err: " << fd;
-                return;
-            }
-
-            struct pollfd fodPressStatusPoll = {
-                    .fd = fd,
-                    .events = POLLERR | POLLPRI,
-                    .revents = 0,
-            };
-
-            while (true) {
-                int rc = poll(&fodPressStatusPoll, 1, -1);
-                if (rc < 0) {
-                    LOG(ERROR) << "failed to poll " << FOD_PRESS_STATUS_PATH << ", err: " << rc;
-                    continue;
-                }
-
-                bool pressed = readBool(fd);
-                mDevice->extCmd(mDevice, COMMAND_FOD_PRESS_STATUS,
-                                pressed ? PARAM_FOD_PRESSED : PARAM_FOD_RELEASED);
-
-                // Request HBM
-                struct disp_local_hbm_req displayLhbmRequest = {
-                        .base = displayBasePrimary,
-                        .local_hbm_value = pressed ? LHBM_TARGET_BRIGHTNESS_WHITE_1000NIT
-                                              : LHBM_TARGET_BRIGHTNESS_OFF_FINGER_UP,
-                };
-                ioctl(disp_fd_.get(), MI_DISP_IOCTL_SET_LOCAL_HBM, &displayLhbmRequest);
-            }
-        }).detach();
-
         // Thread to listen for fod ui changes
         std::thread([this]() {
             android::base::unique_fd fd(open(DISP_FEATURE_PATH, O_RDWR));
@@ -211,13 +176,35 @@ class XiaomiKunziteUdfpsHandler : public UdfpsHandler {
 
     void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
         LOG(INFO) << __func__;
-        // Ensure touchscreen is aware of the press state, ideally this is not needed
+        
+        // Notify HAL about finger press
+        mDevice->extCmd(mDevice, COMMAND_FOD_PRESS_STATUS, PARAM_FOD_PRESSED);
+        
+        // Turn on HBM
+        struct disp_local_hbm_req displayLhbmRequest = {
+                .base = displayBasePrimary,
+                .local_hbm_value = LHBM_TARGET_BRIGHTNESS_WHITE_1000NIT,
+        };
+        ioctl(disp_fd_.get(), MI_DISP_IOCTL_SET_LOCAL_HBM, &displayLhbmRequest);
+        
+        // Ensure touchscreen is aware of the press state
         setFingerDown(true);
     }
 
     void onFingerUp() {
         LOG(INFO) << __func__;
-        // Ensure touchscreen is aware of the press state, ideally this is not needed
+        
+        // Notify HAL about finger release
+        mDevice->extCmd(mDevice, COMMAND_FOD_PRESS_STATUS, PARAM_FOD_RELEASED);
+        
+        // Turn off HBM
+        struct disp_local_hbm_req displayLhbmRequest = {
+                .base = displayBasePrimary,
+                .local_hbm_value = LHBM_TARGET_BRIGHTNESS_OFF_FINGER_UP,
+        };
+        ioctl(disp_fd_.get(), MI_DISP_IOCTL_SET_LOCAL_HBM, &displayLhbmRequest);
+        
+        // Ensure touchscreen is aware of the press state
         setFingerDown(false);
     }
 
@@ -258,6 +245,14 @@ class XiaomiKunziteUdfpsHandler : public UdfpsHandler {
 
     void cancel() {
         LOG(INFO) << __func__;
+        setFodStatus(FOD_STATUS_OFF);
+        
+        // Turn off HBM on cancel
+        struct disp_local_hbm_req displayLhbmRequest = {
+            .base = displayBasePrimary,
+            .local_hbm_value = LHBM_TARGET_BRIGHTNESS_OFF_FINGER_UP,
+        };
+        ioctl(disp_fd_.get(), MI_DISP_IOCTL_SET_LOCAL_HBM, &displayLhbmRequest);
     }
 
   private:
