@@ -242,6 +242,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     vendor/qcom/opensource/power/config/parrot/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
 
+# Properties
+PRODUCT_PACKAGES += \
+    kunzite_sku_properties
+
 # QSPA
 PRODUCT_PACKAGES += \
     vendor.qti.qspa-service \

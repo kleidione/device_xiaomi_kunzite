@@ -1,0 +1,13 @@
+prebuilt_etc {
+    name: "kunzite_sku_properties",
+    srcs: [
+        "rgl_build.prop",
+        "pgl_build.prop",
+        "rcn_build.prop",
+        "rin_build.prop",
+        "rinx_build.prop",
+        "rsa_build.prop",
+        "pin_build.prop",
+    ],
+    device_specific: true,
+}
