@@ -65,6 +65,18 @@ DEVICE_MANIFEST_FILE += \
     $(DEVICE_PATH)/configs/hidl/manifest.xml \
     hardware/qcom-caf/sm8450-6.6/audio/primary-hal/configs/parrot/manifest_audio_qti_services.xml
 
+ODM_MANIFEST_SKUS := \
+    pgl pgl_ss \
+    pin pin_ss \
+    rcn rcn_ss \
+    rgl rgl_ss \
+    rin rin_ss rinx rinx_ss \
+    rsa rsa_ss
+
+$(foreach sku,$(ODM_MANIFEST_SKUS), \
+    $(eval ODM_MANIFEST_$(call to-upper,$(sku))_FILES := \
+        $(DEVICE_PATH)/configs/hidl/sku/manifest_$(sku).xml))
+
 # Kernel
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_RAMDISK_USE_LZ4 := true
