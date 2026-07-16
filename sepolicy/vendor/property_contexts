@@ -1,0 +1,76 @@
+# Audio
+persist.vendor.audio.cloud u:object_r:vendor_audio_cloud_ctrl_mi_prop:s0
+
+# Camera
+persist.vendor.miface.* u:object_r:vendor_miface_prop:s0
+ro.boot.camera.config u:object_r:vendor_camera_sensor_prop:s0
+vendor.miface.* u:object_r:vendor_miface_prop:s0
+vendor.camera. u:object_r:vendor_camera_prop:s0
+vendor.camera.sensor. u:object_r:vendor_camera_xiaomi_prop:s0
+vendor.camera.clientname u:object_r:vendor_packname_prop:s0
+
+# Fingerprint
+persist.vendor.fpc. u:object_r:vendor_fp_prop:s0
+persist.vendor.goodix. u:object_r:vendor_fp_prop:s0
+persist.vendor.sys.fp. u:object_r:vendor_fp_prop:s0
+ro.hardware.fp. u:object_r:vendor_fp_prop:s0
+vendor.dtool. u:object_r:vendor_fp_prop:s0
+vendor.fps_hal. u:object_r:vendor_fp_prop:s0
+vendor.panel.display. u:object_r:vendor_fp_prop:s0
+
+# Mlipay
+odm.security.rootpub.load u:object_r:vendor_payment_security_prop:s0
+odm.security.rootpub.trigger u:object_r:vendor_payment_security_prop:s0
+odm.security.rotatekey.load u:object_r:vendor_payment_security_prop:s0
+odm.security.rotatekey.trigger u:object_r:vendor_payment_security_prop:s0
+persist.vendor.otrp.preview u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.attestation.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.disable_gpio.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.ese_attestation.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.ese_provision.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.idmgr.attestation.se.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.idmgr.attestation.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.idmgr.secid.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.miroot.cert u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.misecmedia.cert u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.pay.fido u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.pay.fido2 u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.pay.fido2pass u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.pay.ifaa u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.pay.soter u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.pay.widevine u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.provision.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.rkp.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.strongbox_upgrade.status u:object_r:vendor_payment_security_prop:s0
+persist.vendor.sys.wv_rkp.status u:object_r:vendor_payment_security_prop:s0
+ro.vendor.idmgr.initialized u:object_r:vendor_payment_security_prop:s0
+vendor.sys.feature_state u:object_r:vendor_payment_security_prop:s0
+vendor.sys.rpmb_state u:object_r:vendor_payment_security_prop:s0
+
+# RIL
+persist.vendor.radio.imei u:object_r:vendor_deviceid_prop:s0
+persist.vendor.radio.meid u:object_r:vendor_deviceid_prop:s0
+ro.vendor.miui.build.region u:object_r:vendor_miui_region_prop:s0
+ro.vendor.miui.singlesim u:object_r:vendor_miui_singlesim_prop:s0
+ro.vendor.oem.boot_completed u:object_r:vendor_deviceid_prop:s0
+ro.vendor.oem.ctacode u:object_r:vendor_sno_prop:s0
+ro.vendor.oem.imei u:object_r:vendor_deviceid_prop:s0
+ro.vendor.oem.meid u:object_r:vendor_deviceid_prop:s0
+ro.vendor.oem.psno u:object_r:vendor_sno_prop:s0
+ro.vendor.oem.serialno u:object_r:vendor_deviceid_prop:s0
+ro.vendor.oem.sno u:object_r:vendor_sno_prop:s0
+
+# Sensor
+persist.vendor.sensors.used.framebuffer u:object_r:vendor_usedframebuffer_prop:s0
+
+# Thermal
+vendor.sys.thermal.data.path u:object_r:vendor_thermal_normal_prop:s0
+
+# Touchfeature
+persist.vendor.hostprocess. u:object_r:vendor_touch_hostprocess_prop:s0
+persist.vendor.touchfeature. u:object_r:vendor_touchfeature_prop:s0
+ro.vendor.touch.touchflinger.enable u:object_r:vendor_touchfeature_prop:s0
+ro.vendor.touch.touchscheduler.enable u:object_r:vendor_touchfeature_prop:s0
+ro.vendor.touchfeature.type u:object_r:vendor_touchfeature_prop:s0
+vendor.panel. u:object_r:vendor_panel_info_prop:s0
+vendor.touchfeature. u:object_r:vendor_touchfeature_prop:s0

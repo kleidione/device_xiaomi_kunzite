@@ -1,0 +1,10 @@
+hal_client_domain(system_app, hal_miface)
+
+binder_call(system_app, hal_miface)
+
+get_prop(system_app, vendor_camera_xiaomi_prop)
+
+allow system_app vendor_camera_data_file:dir search;
+allow system_app vendor_camera_data_file:file { getattr open read write };
+allow system_app sysfs_flash_name:file rw_file_perms;
+allow system_app hal_miface_service:service_manager find;

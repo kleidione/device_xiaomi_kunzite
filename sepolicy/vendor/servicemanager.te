@@ -1,0 +1,8 @@
+binder_call(servicemanager, hal_graphics_composer_default)
+
+allow servicemanager hal_camera_default:dir search;
+allow servicemanager hal_camera_default:file { open read };
+allow servicemanager hal_camera_default:process getattr;
+allow servicemanager hal_miface_default:dir search;
+allow servicemanager hal_miface_default:file { open read };
+allow servicemanager hal_miface_default:process getattr;

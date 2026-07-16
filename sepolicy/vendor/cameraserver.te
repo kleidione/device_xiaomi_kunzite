@@ -1,0 +1,13 @@
+binder_call(cameraserver, mediacodec)
+
+get_prop(cameraserver, vendor_adsprpc_prop)
+get_prop(cameraserver, vendor_camera_prop)
+get_prop(cameraserver, vendor_display_prop)
+set_prop(cameraserver, vendor_packname_prop)
+get_prop(cameraserver, hal_miface_default)
+
+allow cameraserver system_file:dir r_dir_perms;
+allow cameraserver system_server:unix_stream_socket { read write };
+allow cameraserver vendor_sysfs_camera:dir search;
+allow cameraserver vendor_sysfs_camera:file r_file_perms;
+allow cameraserver hal_miface_default:dir search;

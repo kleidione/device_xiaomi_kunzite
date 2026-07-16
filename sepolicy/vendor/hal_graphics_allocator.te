@@ -1,0 +1,2 @@
+allow hal_graphics_allocator_default vendor_vm_cp_camera_device:chr_file r_file_perms;
+allow hal_graphics_allocator_default vendor_vm_cp_camera_preview_device:chr_file r_file_perms;
