@@ -1,0 +1,11 @@
+# Charge
+type vendor_charge_block_device, dev_type;
+
+# Display
+type vendor_display_device, dev_type;
+
+# Fingerprint
+type vendor_fingerprint_device, dev_type;
+
+# Touchfeature
+type touchfeature_device, dev_type;

@@ -1,0 +1,6 @@
+allow hwservicemanager hal_camera_default:dir search;
+allow hwservicemanager hal_camera_default:file { map open read };
+allow hwservicemanager hal_camera_default:process getattr;
+allow hwservicemanager hal_miface_default:dir search;
+allow hwservicemanager hal_miface_default:file { map open read };
+allow hwservicemanager hal_miface_default:process getattr;

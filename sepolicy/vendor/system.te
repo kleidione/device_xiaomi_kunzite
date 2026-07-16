@@ -1,0 +1,6 @@
+binder_call(system_server, hal_camera_default)
+binder_call(system_server, hal_touchfeature_xiaomi_default)
+
+get_prop(system_server, vendor_persist_camera_prop)
+
+allow system_server hal_touchfeature_xiaomi_default:process signal;

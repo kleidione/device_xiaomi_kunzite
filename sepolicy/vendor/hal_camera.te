@@ -1,0 +1,71 @@
+hal_client_domain(hal_camera_default, hal_graphics_allocator)
+hal_client_domain(hal_camera_default, hal_graphics_composer)
+hal_client_domain(hal_camera_default, vendor_hal_hexlp)
+hal_client_domain(hal_camera_default, vendor_hal_vpp)
+
+add_service(hal_camera_server, vendor_hal_camera_aon_service)
+add_service(hal_camera_server, vendor_hal_offlinecamera_service)
+
+get_prop(hal_camera, vendor_adsprpc_prop)
+get_prop(hal_camera, vendor_camera_sensor_prop)
+
+hal_attribute_hwservice(hal_camera, vendor_hal_camera_aon_hwservice)
+hal_attribute_hwservice(hal_camera, vendor_hal_camera_postproc_hwservice)
+
+r_dir_file(hal_camera, adsprpcd_file)
+r_dir_file(hal_camera_default, camera_persist_file)
+r_dir_file(hal_camera_default, vendor_sysfs_graphics)
+
+set_prop(hal_camera, vendor_camera_prop)
+set_prop(hal_camera_default, vendor_camera_xiaomi_prop)
+set_prop(hal_camera_default, vendor_packname_prop)
+
+unix_socket_connect(hal_camera, property, vendor_thermal-engine)
+unix_socket_connect(hal_camera, vendor_thermal, init)
+unix_socket_connect(hal_camera_default, property, vendor_ssgtzd)
+unix_socket_connect(hal_camera_default, vendor_ssgtzd, init)
+
+vndbinder_use(hal_camera_default)
+
+wakelock_use(hal_camera_default)
+
+allow hal_camera gpu_device:chr_file rw_file_perms;
+allow hal_camera self:capability sys_nice;
+allow hal_camera self:qipcrtr_socket create_socket_perms;
+allow hal_camera vendor_camera_data_file:dir create_dir_perms;
+allow hal_camera vendor_camera_data_file:file create_file_perms;
+allow hal_camera vendor_qdisplay_service:service_manager find;
+allow hal_camera vendor_synx_device:chr_file rw_file_perms;
+allow hal_camera vendor_sysfs_ddr:file r_file_perms;
+allow hal_camera vendor_sysfs_jpeg:file r_file_perms;
+allow hal_camera vendor_ubwcp_device:chr_file r_file_perms;
+allow hal_camera_client vendor_hal_camera_aon_service:service_manager find;
+allow hal_camera_client vendor_hal_offlinecamera_service:service_manager find;
+allow hal_camera_client vendor_hal_postproc_service:service_manager find;
+allow hal_camera_default camera_persist_file:dir { add_name search write };
+allow hal_camera_default camera_persist_file:file { create getattr open read setattr write };
+allow hal_camera_default mnt_vendor_file:dir { open read search };
+allow hal_camera_default mnt_vendor_file:file { getattr open read };
+allow hal_camera_default proc_meminfo:file r_file_perms;
+allow hal_camera_default tee_device:chr_file rw_file_perms;
+allow hal_camera_default vendor_dmabuf_display_heap_device:chr_file r_file_perms;
+allow hal_camera_default vendor_dmabuf_qseecom_heap_device:chr_file r_file_perms;
+allow hal_camera_default vendor_dmabuf_qseecom_ta_heap_device:chr_file r_file_perms;
+allow hal_camera_default vendor_dmabuf_system_heap_device:chr_file r_file_perms;
+allow hal_camera_default vendor_dmabuf_user_contig_heap_device:chr_file r_file_perms;
+allow hal_camera_default vendor_membuf_dev:chr_file r_file_perms;
+allow hal_camera_default vendor_qdsp_device:chr_file r_file_perms;
+allow hal_camera_default vendor_sys_nonsp_comp:file r_file_perms;
+allow hal_camera_default vendor_sys_sp_comp:file r_file_perms;
+allow hal_camera_default vendor_sysfs_battery_supply:dir search;
+allow hal_camera_default vendor_sysfs_battery_supply:file { open read write };
+allow hal_camera_default vendor_sysfs_camera:file r_file_perms;
+allow hal_camera_default vendor_vm_cp_non_pixel_device:chr_file r_file_perms;
+allow hal_camera_default vendor_vm_cp_pixel_device:chr_file r_file_perms;
+allow hal_camera_default vendor_xdsp_device:chr_file r_file_perms;
+
+allowxperm hal_camera self:qipcrtr_socket ioctl { 0xc300-0xc305 };
+allowxperm hal_camera_default vendor_dmabuf_display_heap_device:chr_file ioctl SNDRV_HWDEP_IOCTL_PVERSION;
+
+dontaudit hal_camera graphics_device:dir search;
+dontaudit hal_camera_default default_prop:file read;
