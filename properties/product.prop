@@ -53,3 +53,8 @@ media.stagefright.audio.deep=true
 
 # Radio (IMS)
 persist.vendor.ims.no_stapa=1
+
+# RKP
+remote_provisioning.enable_rkpd=true
+remote_provisioning.hostname=remoteprovisioning.googleapis.com
+remote_provisioning.strongbox.rkp_only=true
