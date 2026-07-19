@@ -4,14 +4,30 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
-    <!-- Bottom margin size when fingerprint in display is active -->
-    <dimen name="keyguard_indication_margin_bottom">130dp</dimen>
+<!-- status bar -->
+    <dimen name="status_bar_padding_top">12.0px</dimen>
+    <dimen name="status_bar_padding_start">4.0px</dimen>
+    <dimen name="status_bar_padding_end">0.0px</dimen>
+    <dimen name="status_bar_icons_padding_start">3.0px</dimen>
+    <dimen name="status_bar_icons_padding_end">4.0px</dimen>
+    <dimen name="status_bar_clock_starting_padding">0.0px</dimen>
+    <dimen name="status_bar_clock_end_padding">0.0px</dimen>
+    <dimen name="status_bar_left_clock_starting_padding">0.0px</dimen>
+    <dimen name="hover_system_icons_container_padding_start">2.0px</dimen>
+    <dimen name="hover_system_icons_container_padding_end">2.0px</dimen>
 
-    <!-- Location on the screen of the center of the physical power button. This is a reasonable
-         default that should be overridden by device-specific overlays. -->
+<!-- keyguard / lockscreen -->
+    <dimen name="status_bar_header_height_keyguard">@*android:dimen/status_bar_height_portrait</dimen>
+    <dimen name="keyguard_carrier_text_margin">46.0px</dimen>
+    <dimen name="keyguard_indication_margin_bottom">341.25px</dimen>
+
+<!-- rounded corners -->
+    <dimen name="rounded_corner_content_padding">56px</dimen>
+
+<!-- hardware / device specs -->
     <dimen name="physical_power_button_center_screen_location_y">1175px</dimen>
-
-    <!-- Microns/ums (1000 um = 1mm) per pixel for the given device. If unspecified, UI that
-         relies on this value will not be sized correctly. -->
     <item name="pixel_pitch" format="float" type="dimen">50.0</item>
+
+    <!-- Blur -->
+    <dimen name="max_shade_window_blur_radius">17dp</dimen>
 </resources>
