@@ -4,6 +4,6 @@
 //
 
 runtime_resource_overlay {
-    name: "LineageSDKOverlayKunzite",
-    system_ext_specific: true,
+    name: "CustomSettingsOverlayKunzite",
+    product_specific: true,
 }

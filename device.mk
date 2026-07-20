@@ -222,8 +222,8 @@ $(foreach sku, pgl pgl_ss rgl rgl_ss rsa rsa_ss, \
 # Overlays
 PRODUCT_PACKAGES += \
     CarrierConfigOverlayKunzite \
+    CustomSettingsOverlayKunzite \
     FrameworksOverlayKunzite \
-    LineageSDKOverlayKunzite \
     NfcOverlayKunzite \
     SecureElementOverlayKunzite \
     SettingsOverlayKunzite \
