@@ -4,4 +4,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_kunzite.mk
+    $(LOCAL_DIR)/custom_kunzite.mk
