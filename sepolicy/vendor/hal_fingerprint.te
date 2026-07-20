@@ -1,7 +1,6 @@
 type vendor_hal_fingerprint_service_xiaomi, hal_service_type, protected_service, service_manager_type;
 
 add_service(hal_fingerprint_default, vendor_hal_fingerprint_service_xiaomi)
-hal_client_domain(hal_fingerprint_default, vendor_hal_perf)
 
 get_prop(hal_fingerprint_default, vendor_panel_info_prop)
 set_prop(hal_fingerprint_default, vendor_fp_prop)
@@ -20,8 +19,6 @@ allow hal_fingerprint_default vendor_display_device:chr_file { ioctl open read w
 allow hal_fingerprint_default vendor_dmabuf_qseecom_heap_device:chr_file r_file_perms;
 allow hal_fingerprint_default vendor_dmabuf_qseecom_ta_heap_device:chr_file { ioctl open read };
 allow hal_fingerprint_default vendor_fingerprint_device:chr_file rwx_file_perms;
-allow hal_fingerprint_default vendor_hal_perf_default:binder call;
-allow hal_fingerprint_default vendor_hal_perf_hwservice:hwservice_manager find;
 allow hal_fingerprint_default vendor_sysfs_display:dir r_dir_perms;
 allow hal_fingerprint_default vendor_sysfs_display:file rw_file_perms;
 allow hal_fingerprint_default vendor_sysfs_graphics:dir r_dir_perms;

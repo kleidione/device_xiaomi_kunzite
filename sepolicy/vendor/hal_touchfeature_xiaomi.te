@@ -4,7 +4,6 @@ type hal_touchfeature_xiaomi_service, hal_service_type, protected_service, servi
 
 binder_call(hal_touchfeature_xiaomi_default, system_server)
 binder_use(hal_touchfeature_xiaomi_server)
-hal_client_domain(hal_touchfeature_xiaomi_default, vendor_hal_perf)
 hal_server_domain(hal_touchfeature_xiaomi_default, hal_touchfeature_xiaomi)
 init_daemon_domain(hal_touchfeature_xiaomi_default)
 vndbinder_use(hal_touchfeature_xiaomi)
@@ -40,9 +39,6 @@ allow hal_touchfeature_xiaomi_default touchfeature_device:file { getattr map rea
 allow hal_touchfeature_xiaomi_default uhid_device:chr_file rw_file_perms;
 allow hal_touchfeature_xiaomi_default vendor_bsp_data_log_file:dir create_dir_perms;
 allow hal_touchfeature_xiaomi_default vendor_bsp_data_log_file:file create_file_perms;
-allow hal_touchfeature_xiaomi_default vendor_hal_perf2_service:service_manager find;
-allow hal_touchfeature_xiaomi_default vendor_hal_perf_default:binder call;
-allow hal_touchfeature_xiaomi_default vendor_hal_perf_hwservice:hwservice_manager find;
 allow hal_touchfeature_xiaomi_default vendor_touchfeature_prop:file { getattr open read };
 allow hal_touchfeature_xiaomi_server hal_touchfeature_xiaomi_client:binder transfer;
 allow hal_touchfeature_xiaomi_server hal_touchfeature_xiaomi_service:service_manager { add find };
