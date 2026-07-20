@@ -224,6 +224,7 @@ PRODUCT_PACKAGES += \
     CarrierConfigOverlayKunzite \
     CustomSettingsOverlayKunzite \
     FrameworksOverlayKunzite \
+    Launcher3DeviceOverlayKunzite \
     NfcOverlayKunzite \
     SecureElementOverlayKunzite \
     SettingsOverlayKunzite \
