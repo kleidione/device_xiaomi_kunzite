@@ -601,6 +601,7 @@ on property:ro.vendor.oem.wifimac=*
 on property:sys.boot_completed=1
     # Enable PowerHAL hint processing
     setprop vendor.powerhal.init 1
+    write /proc/tp_gesture 1
 
 service vendor.sensors-hal-multihal /vendor/bin/hw/android.hardware.sensors-service.xiaomi-multihal
     override
