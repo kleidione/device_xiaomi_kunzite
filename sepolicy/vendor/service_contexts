@@ -9,6 +9,10 @@ vendor.xiaomi.hardware.aon.IAlwaysOn/miaonservicebymiface u:object_r:hal_miface_
 # Charge
 vendor.xiaomi.hardware.micharge.IMiCharge/default   u:object_r:hal_micharge_service:s0
 
+# Dolby
+android.hardware.media.c2.IComponentStore/default9    u:object_r:hal_codec2_service:s0
+vendor.dolby.dms.IDms/default                         u:object_r:hal_aidl_dms_service:s0
+
 # Fingerprint
 vendor.xiaomi.hardware.fx.tunnel.IMiFxTunnel/default                    u:object_r:vendor_hal_fingerprint_service_xiaomi:s0
 

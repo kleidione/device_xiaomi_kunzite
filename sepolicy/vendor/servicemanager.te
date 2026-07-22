@@ -6,3 +6,6 @@ allow servicemanager hal_camera_default:process getattr;
 allow servicemanager hal_miface_default:dir search;
 allow servicemanager hal_miface_default:file { open read };
 allow servicemanager hal_miface_default:process getattr;
+allow servicemanager hal_aidl_dms_server:dir search;
+allow servicemanager hal_aidl_dms_server:file { open read };
+allow servicemanager hal_aidl_dms_server:process getattr;

@@ -1,0 +1,2 @@
+# Dolby
+type hal_aidl_dms_service, protected_service, service_manager_type, hal_service_type;
