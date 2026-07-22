@@ -1,6 +1,11 @@
 # Camera
 hal_attribute(miface)
 
+# Dolby
+attribute hal_aidl_dms;
+attribute hal_aidl_dms_client;
+attribute hal_aidl_dms_server;
+
 # Mlipay
 attribute hal_mlipay;
 attribute hal_mlipay_server;
