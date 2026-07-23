@@ -262,19 +262,17 @@ class XiaomiKunziteUdfpsHandler : public UdfpsHandler {
 
     void setFodStatus(int value) {
         ioctl(touch_fd_.get(), TOUCH_IOC_SELECT_TOUCH_ID, MI_DISP_PRIMARY);
-        touch_base data = {
-            .mode = Touch_Fod_Enable,
-            .data_buf = {value},
-        };
+        touch_base data = touchDataPrimary;
+        data.mode = Touch_Fod_Enable;
+        data.data_buf[0] = value;
         ioctl(touch_fd_.get(), TOUCH_IOC_COMMON_DATA, &data);
     }
 
     void setFingerDown(bool pressed) {
         ioctl(touch_fd_.get(), TOUCH_IOC_SELECT_TOUCH_ID, MI_DISP_PRIMARY);
-        touch_base data = {
-            .mode = THP_FOD_DOWNUP_CTL,
-            .data_buf = {pressed ? 1 : 0},
-        };
+        touch_base data = touchDataPrimary;
+        data.mode = THP_FOD_DOWNUP_CTL;
+        data.data_buf[0] = pressed ? 1 : 0;
         ioctl(touch_fd_.get(), TOUCH_IOC_COMMON_DATA, &data);
     }
 };
