@@ -48,6 +48,9 @@ debug.sf.disable_translate_dataspace=true
 debug.sf.mi_asynchronous_re.enable=true
 ro.surface_flinger.supports_background_blur=1
 
+# F2FS
+persist.fsck.disable_linear_lookup=on
+
 # Media
 media.stagefright.audio.deep=true
 
