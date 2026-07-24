@@ -27,7 +27,6 @@ vendor/lib64/libadsp_default_listener.so
 vendor/lib64/libadsprpc.so
 vendor/lib64/libloadalgo_stub.so
 vendor/lib64/libsdsprpc.so
-vendor/lib64/libvmmem.so
 
 # ADSP modules
 vendor/lib/rfsa/adsp/capi_elus_rx.so
