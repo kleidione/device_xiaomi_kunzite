@@ -4,6 +4,9 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
+    <!-- Auto-brightness sensor type string -->
+    <string name="config_displayLightSensorType">xiaomi.sensor.ambientlight.raw</string>
+
     <!-- Enables or disables haptic effect when the text insertion/selection handle is moved
          manually by the user. Off by default, since the expected haptic feedback may not be
          available on some devices. -->
