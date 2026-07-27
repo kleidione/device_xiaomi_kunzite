@@ -398,3 +398,6 @@ PRODUCT_PACKAGES += \
 
 # Inherit from the proprietary files makefile.
 $(call inherit-product, vendor/xiaomi/kunzite/kunzite-vendor.mk)
+
+# Inherit Google Camera
+$(call inherit-product-if-exists, vendor/google/GoogleCamera/config.mk) 
