@@ -112,7 +112,6 @@ blob_fixups: blob_fixups_user_type = {
         .add_needed('libcodec2_shim.so')
         .replace_needed('android.hardware.graphics.common-V5-ndk.so', 'android.hardware.graphics.common-V7-ndk.so'),
     (
-         'vendor/lib64/soundfx/libbundleaidl.so',
          'vendor/lib64/soundfx/libhwdapaidl.so',
          'vendor/lib64/soundfx/libswgamedapaidl.so',
     ): blob_fixup()
