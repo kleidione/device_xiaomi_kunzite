@@ -11,3 +11,5 @@ allow cameraserver system_server:unix_stream_socket { read write };
 allow cameraserver vendor_sysfs_camera:dir search;
 allow cameraserver vendor_sysfs_camera:file r_file_perms;
 allow cameraserver hal_miface_default:dir search;
+allow cameraserver property_socket:sock_file { read write };
+allow cameraserver sysfs_torch:file rw_file_perms;

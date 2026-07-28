@@ -17,6 +17,13 @@ genfscon sysfs /kernel/hardware_info_to_dump/hardw_info u:object_r:vendor_sysfs_
 # NFC
 genfscon sysfs /devices/platform/soc/ac0000.qcom,qupv3_1_geni_se/a80000.i2c/i2c-1/1-0028/chip_name u:object_r:sysfs_nfc:s0
 
+# Torch
+genfscon sysfs /devices/platform/soc/c42d000.qcom,spmi/spmi-0/0-05/c42d000.qcom,spmi:qcom,pm6150l@5:qcom,leds@d300/leds/led:torch_0/brightness       u:object_r:sysfs_torch:s0
+genfscon sysfs /devices/platform/soc/c42d000.qcom,spmi/spmi-0/0-05/c42d000.qcom,spmi:qcom,pm6150l@5:qcom,leds@d300/leds/led:torch_0/max_brightness   u:object_r:sysfs_torch:s0
+genfscon sysfs /devices/platform/soc/c42d000.qcom,spmi/spmi-0/0-05/c42d000.qcom,spmi:qcom,pm6150l@5:qcom,leds@d300/leds/led:torch_1/brightness       u:object_r:sysfs_torch:s0
+genfscon sysfs /devices/platform/soc/c42d000.qcom,spmi/spmi-0/0-05/c42d000.qcom,spmi:qcom,pm6150l@5:qcom,leds@d300/leds/led:torch_1/max_brightness   u:object_r:sysfs_torch:s0
+genfscon sysfs /devices/platform/soc/c42d000.qcom,spmi/spmi-0/0-05/c42d000.qcom,spmi:qcom,pm6150l@5:qcom,leds@d300/leds/led:switch_2/brightness      u:object_r:sysfs_torch:s0
+
 # Touchfeature
 genfscon sysfs /devices/virtual/touch/touch_dev/palm_sensor u:object_r:sysfs_tp_virtual_prox:s0
 

@@ -36,6 +36,9 @@ type sysfs_power_save, fs_type, sysfs_type;
 type sysfs_poweraware, fs_type, sysfs_type;
 type thermal_data_file, data_file_type, file_type;
 
+# Torch
+type sysfs_torch, sysfs_type, fs_type;
+
 # Touchfeature
 type proc_tp_file, fs_type, proc_type;
 type proc_tp_lockdown, fs_type, proc_type;
