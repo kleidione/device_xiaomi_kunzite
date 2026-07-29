@@ -1,6 +1,10 @@
 # CNE
 persist.vendor.cne.feature=1
 
+# Device
+ro.product.marketname=REDMI Note 15 5G
+ro.product.mod_device=kunzite_global
+
 # GNSS
 persist.sys.gps.selfRecovery=3
 persist.vendor.overlay.izat.optin=rro
