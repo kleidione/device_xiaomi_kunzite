@@ -25,8 +25,8 @@ PRODUCT_SYSTEM_NAME := kunzite_global
 PRODUCT_SYSTEM_DEVICE := kunzite
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    BuildDesc="kunzite_global-user 16 BP2A.250605.031 OS3.0.301.0.WPQMIXM release-keys" \
-    BuildFingerprint=Redmi/kunzite_global/kunzite:16/BP2A.250605.031.A3/OS3.0.301.0.WPQMIXM:user/release-keys \
+    BuildDesc="kunzite_global-user 16 BP2A.250605.031 OS3.0.302.0.WPQMIXM release-keys" \
+    BuildFingerprint=Redmi/kunzite_global/kunzite:16/BP2A.250605.031.A3/OS3.0.302.0.WPQMIXM:user/release-keys \
     DeviceName=$(PRODUCT_SYSTEM_DEVICE) \
     DeviceProduct=$(PRODUCT_SYSTEM_NAME)
 
