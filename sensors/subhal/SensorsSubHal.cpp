@@ -5,7 +5,10 @@
 
 #include "SensorsSubHal.h"
 
+#include <android-base/file.h>
 #include <android-base/logging.h>
+#include <android-base/parseint.h>
+#include <android-base/strings.h>
 #include <android-base/unique_fd.h>
 #include <display/drm/mi_disp.h>
 #include <dlfcn.h>
@@ -25,6 +28,7 @@ namespace ssc_wrapper {
 namespace {
 constexpr auto kLibName = "sensors.ssc.so";
 constexpr char kSip1328RawStringType[] = "xiaomi.sensor.ambientlight.raw";
+constexpr char kBrightnessPath[] = "/sys/class/backlight/panel0-backlight/brightness";
 
 // This is larger than any sensor handle returned by the HAL
 constexpr auto kWrappedSensorHandleBase = 0x10000;
@@ -101,6 +105,16 @@ SensorsSubHal::~SensorsSubHal() {
 
 Return<Result> SensorsSubHal::setOperationMode(OperationMode mode) {
     return impl_->setOperationMode(mode);
+}
+
+int32_t SensorsSubHal::currentBrightness() const {
+    std::string value;
+    if (!android::base::ReadFileToString(kBrightnessPath, &value)) {
+        return 0;
+    }
+    int32_t brightness = 0;
+    android::base::ParseInt(android::base::Trim(value), &brightness);
+    return brightness;
 }
 
 int32_t SensorsSubHal::getRealHandle(int32_t sensor_handle) const {
@@ -325,10 +339,20 @@ void SensorsSubHal::postEvents(const std::vector<Event>& events, ScopedWakelock 
             if (e.u.vec4.x == -1 && e.u.vec4.y == 0 && e.u.vec4.z == 0 && e.u.vec4.w == 0) {
                 continue;
             }
+            const float als = e.u.vec4.x;
+            const float ir = e.u.vec4.y;
+            const int32_t brightness = currentBrightness();
+            const float lux = light_cal_.toLux(als, ir, brightness);
+            if (lux < 0.f) {
+                continue;
+            }
+
             auto event_copy = e;
             event_copy.sensorHandle = alias_handle;
             event_copy.sensorType = SensorType::LIGHT;
-            event_copy.u.scalar = e.u.vec4.y;
+            event_copy.u.scalar = lux;
+            LOG(VERBOSE) << "light: als=" << als << " ir=" << ir << " dbv=" << brightness
+                         << " -> " << lux << " lux";
             forwarded_events.emplace_back(std::move(event_copy));
         }
     }
