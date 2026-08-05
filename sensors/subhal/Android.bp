@@ -8,6 +8,7 @@ cc_library_shared {
     name: "sensors.ssc_wrapper",
     defaults: ["hidl_defaults"],
     srcs: [
+        "LightCalibration.cpp",
         "SensorsSubHal.cpp",
     ],
     shared_libs: [
