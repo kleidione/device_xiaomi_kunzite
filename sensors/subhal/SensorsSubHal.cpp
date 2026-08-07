@@ -5,6 +5,8 @@
 
 #include "SensorsSubHal.h"
 
+#include "CwbCapture.h"
+
 #include <android-base/file.h>
 #include <android-base/logging.h>
 #include <android-base/parseint.h>
@@ -50,6 +52,7 @@ bool IsRawAmbientLightSensor(const android::hardware::sensors::V2_1::SensorInfo&
 static constexpr char kDispFeatureDevice[] = "/dev/mi_display/disp_feature";
 static constexpr auto kSampleInterval = std::chrono::milliseconds(333);
 static constexpr auto kForwardInterval = std::chrono::milliseconds(1000);
+static constexpr int kCwbEveryNSamples = 3;
 static constexpr size_t kMaxLuxSamples = 64;
 static constexpr uint64_t kForwardLogEvery = 60;
 
@@ -337,6 +340,16 @@ void SensorsSubHal::reportThread() {
         const int32_t brightness = currentBrightness();
         if (brightness != last_brightness_) {
             last_brightness_ = brightness;
+        }
+        if (++sample_tick_ % kCwbEveryNSamples == 0) {
+            const auto& info = light_cal_.cwbInfo();
+            if (info.valid) {
+                auto& cwb = CwbCapture::getInstance();
+                cwb.configure(info, light_cal_.panelGamma(brightness));
+                if (cwb.request()) {
+                    light_cal_.setContentLevel(cwb.contentLevel());
+                }
+            }
         }
         lock.lock();
     }
