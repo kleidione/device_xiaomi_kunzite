@@ -7,3 +7,52 @@ runtime_resource_overlay {
     name: "WifiOverlayKunzite",
     vendor: true,
 }
+
+runtime_resource_overlay {
+    name: "WifiOverlayKunzitePgl",
+    manifest: "AndroidManifest-pgl.xml",
+    resource_dirs: ["res-poco"],
+    vendor: true,
+}
+
+runtime_resource_overlay {
+    name: "WifiOverlayKunzitePin",
+    manifest: "AndroidManifest-pin.xml",
+    resource_dirs: ["res-poco"],
+    vendor: true,
+}
+
+runtime_resource_overlay {
+    name: "WifiOverlayKunziteRgl",
+    manifest: "AndroidManifest-rgl.xml",
+    resource_dirs: ["res-redmi"],
+    vendor: true,
+}
+
+runtime_resource_overlay {
+    name: "WifiOverlayKunziteRin",
+    manifest: "AndroidManifest-rin.xml",
+    resource_dirs: ["res-redmi"],
+    vendor: true,
+}
+
+runtime_resource_overlay {
+    name: "WifiOverlayKunziteRsa",
+    manifest: "AndroidManifest-rsa.xml",
+    resource_dirs: ["res-redmi"],
+    vendor: true,
+}
+
+runtime_resource_overlay {
+    name: "WifiOverlayKunziteRinx",
+    manifest: "AndroidManifest-rinx.xml",
+    resource_dirs: ["res-redmiSe"],
+    vendor: true,
+}
+
+runtime_resource_overlay {
+    name: "WifiOverlayKunziteRcn",
+    manifest: "AndroidManifest-rcn.xml",
+    resource_dirs: ["res-redmiCn"],
+    vendor: true,
+}
