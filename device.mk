@@ -251,9 +251,23 @@ PRODUCT_PACKAGES += \
     NexusLauncherDeviceOverlayKunzite \
     SecureElementOverlayKunzite \
     SettingsOverlayKunzite \
+    SettingsProviderOverlayKunzitePgl \
+    SettingsProviderOverlayKunzitePin \
+    SettingsProviderOverlayKunziteRgl \
+    SettingsProviderOverlayKunziteRin \
+    SettingsProviderOverlayKunziteRsa \
+    SettingsProviderOverlayKunziteRinx \
+    SettingsProviderOverlayKunziteRcn \
     SystemUIOverlayKunzite \
     TelephonyOverlayKunzite \
-    WifiOverlayKunzite
+    WifiOverlayKunzite \
+    WifiOverlayKunzitePgl \
+    WifiOverlayKunzitePin \
+    WifiOverlayKunziteRgl \
+    WifiOverlayKunziteRin \
+    WifiOverlayKunziteRsa \
+    WifiOverlayKunziteRinx \
+    WifiOverlayKunziteRcn
 
 # Partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
