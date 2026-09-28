@@ -249,6 +249,13 @@ PRODUCT_PACKAGES += \
     LineageApertureAppCommon \
     NfcOverlayKunzite \
     NexusLauncherDeviceOverlayKunzite \
+    RegulatoryOverlayKunzitePgl \
+    RegulatoryOverlayKunzitePin \
+    RegulatoryOverlayKunziteRcn \
+    RegulatoryOverlayKunziteRgl \
+    RegulatoryOverlayKunziteRin \
+    RegulatoryOverlayKunziteRinx \
+    RegulatoryOverlayKunziteRsa \
     SecureElementOverlayKunzite \
     SettingsOverlayKunzite \
     SettingsProviderOverlayKunzitePgl \
