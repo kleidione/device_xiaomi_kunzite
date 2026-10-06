@@ -1758,6 +1758,10 @@ vendor/lib64/vendor.xiaomi.hardware.aidl.mtdservice-V1-ndk.so
 
 # Sensors
 odm/etc/init/init.boled.lightsensor.rc
+odm/etc/sensors/lightSensorConfig.json
+odm/etc/sensors/lightSensorConfigSec.json
+odm/etc/sensors/lightSensorConfigThird.json
+odm/etc/sensors/lightSensorConfigFourth.json
 vendor/bin/hw/vendor.qti.hardware.sensorscalibrate-service
 vendor/bin/init.qcom.sensors.sh
 vendor/bin/sensors-qesdk
