@@ -32,6 +32,7 @@ class LightCalibration {
 
     bool valid() const { return mValid; }
     float toLux(float als, float ir, int32_t brightness) const;
+    void dump() const;
     void setContentLevel(float level) { mContentLevel.store(level); }
     const CwbInfo& cwbInfo() const { return mCwb; }
     float panelGamma(int32_t brightness) const;

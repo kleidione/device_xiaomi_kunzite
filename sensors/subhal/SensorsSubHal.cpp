@@ -239,6 +239,7 @@ Return<void> SensorsSubHal::getSensorsList_2_1(ISensors::getSensorsList_2_1_cb _
             raw_handle_to_alias_handle_[raw_sensor.sensorHandle] = alias.sensorHandle;
             LOG(INFO) << "aliasing raw light " << std::hex << raw_sensor.sensorHandle << " onto "
                       << alias_handle << std::dec;
+            light_cal_.dump();
             filtered.emplace_back(std::move(alias));
 
             auto aliased_sensors = hidl_vec<SensorInfo>(filtered.size());

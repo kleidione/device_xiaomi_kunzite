@@ -336,3 +336,11 @@ float LightCalibration::toLux(float als, float ir, int32_t brightness) const {
     float lux = (coef0 * alsNet + coef1 * irNet) / kLuxDivisor * dgf * mScale;
     return std::max(lux, 0.f);
 }
+
+void LightCalibration::dump() const {
+    LOG(INFO) << "calibration: valid=" << mValid << " leakage_rows=" << mLeakage.size()
+              << " fullwhite_rows=" << mFullWhite.size() << " cwb=" << mCwb.valid
+              << " coef0A=" << mCoef0A << " coef1A=" << mCoef1A << " dgfA=" << mDgfA
+              << " coef0B=" << mCoef0B << " coef1B=" << mCoef1B << " dgfB=" << mDgfB
+              << " irThr=" << mIrThreshold << " scale=" << mScale;
+}
