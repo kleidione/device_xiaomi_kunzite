@@ -99,9 +99,11 @@ class SensorsSubHal : public ISensorsSubHal, public IHalProxyCallback {
     float report_lux_{0.f};
     float report_ir_{0.f};
     std::chrono::steady_clock::time_point last_forward_{};
+    std::chrono::steady_clock::time_point last_starve_log_{};
     std::vector<float> lux_samples_;
     uint64_t forward_count_{0};
     uint64_t sample_tick_{0};
+    float last_logged_lux_{-1.f};
 };
 
 }  // namespace ssc_wrapper

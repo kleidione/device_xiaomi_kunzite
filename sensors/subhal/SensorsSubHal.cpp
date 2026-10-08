@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 
 using ::android::hardware::sensors::V2_0::implementation::ScopedWakelock;
 using ::android::hardware::sensors::V2_1::implementation::ISensorsSubHal;
@@ -349,6 +350,15 @@ void SensorsSubHal::reportThread() {
         const float ir = report_ir_;
         (void)lux;
         (void)ir;
+        const auto now = std::chrono::steady_clock::now();
+        if (now - last_forward_ > std::chrono::seconds(3) &&
+            now - last_starve_log_ > std::chrono::seconds(10)) {
+            last_starve_log_ = now;
+            LOG(INFO) << "no raw light samples for "
+                      << std::chrono::duration_cast<std::chrono::seconds>(now - last_forward_)
+                                 .count()
+                      << "s, holding last lux";
+        }
         lock.unlock();
         const int32_t brightness = currentBrightness();
         if (brightness != last_brightness_) {
@@ -431,6 +441,13 @@ void SensorsSubHal::postEvents(const std::vector<Event>& events, ScopedWakelock 
                     event_copy.u.scalar = median;
                     LOG(VERBOSE) << "light: als=" << als << " ir=" << ir << " dbv=" << brightness
                                  << " -> " << median << " lux";
+                    if (last_logged_lux_ < 0.f ||
+                        std::fabs(median - last_logged_lux_) >
+                                std::max(1.f, last_logged_lux_ * 0.1f)) {
+                        LOG(INFO) << "light: als=" << als << " ir=" << ir << " dbv=" << brightness
+                                  << " -> " << median << " lux";
+                        last_logged_lux_ = median;
+                    }
                     forwarded_events.emplace_back(std::move(event_copy));
                     if (++forward_count_ % kForwardLogEvery == 0) {
                         LOG(INFO) << "forwarded " << forward_count_ << " lux events, last "
