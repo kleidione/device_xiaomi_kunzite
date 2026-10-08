@@ -84,6 +84,7 @@ class SensorsSubHal : public ISensorsSubHal, public IHalProxyCallback {
 
     void displayMonitorThread();
     void reportThread();
+    void setDisplayOn(bool on);
 
     std::atomic<bool> display_on_{false};
     std::atomic<bool> requested_enabled_{false};

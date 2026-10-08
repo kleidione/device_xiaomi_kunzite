@@ -11,10 +11,7 @@
 #include <android-base/logging.h>
 #include <android-base/parseint.h>
 #include <android-base/strings.h>
-#include <android-base/unique_fd.h>
-#include <display/drm/mi_disp.h>
 #include <dlfcn.h>
-#include <poll.h>
 
 #include <algorithm>
 #include <chrono>
@@ -50,7 +47,6 @@ bool IsRawAmbientLightSensor(const android::hardware::sensors::V2_1::SensorInfo&
     return sensor.typeAsString == kSip1328RawStringType;
 }
 
-static constexpr char kDispFeatureDevice[] = "/dev/mi_display/disp_feature";
 static constexpr auto kSampleInterval = std::chrono::milliseconds(333);
 static constexpr auto kForwardInterval = std::chrono::milliseconds(1000);
 static constexpr int kCwbEveryNSamples = 3;
@@ -59,35 +55,6 @@ static constexpr uint64_t kForwardLogEvery = 60;
 
 bool IsDefaultLightSensor(const android::hardware::sensors::V2_1::SensorInfo& sensor) {
     return sensor.type == SensorType::LIGHT && !IsRawAmbientLightSensor(sensor);
-}
-
-disp_event_resp* parseDispEvent(int fd) {
-    disp_event header;
-    ssize_t headerSize = read(fd, &header, sizeof(header));
-    if (headerSize < static_cast<ssize_t>(sizeof(header))) {
-        LOG(ERROR) << "unexpected display event header size: " << headerSize;
-        return nullptr;
-    }
-
-    struct disp_event_resp* response =
-            reinterpret_cast<struct disp_event_resp*>(malloc(header.length));
-    response->base = header;
-
-    int dataLength = response->base.length - static_cast<int>(sizeof(response->base));
-    if (dataLength < 0) {
-        LOG(ERROR) << "invalid data length: " << response->base.length;
-        free(response);
-        return nullptr;
-    }
-
-    ssize_t dataSize = read(fd, &response->data, dataLength);
-    if (dataSize < dataLength) {
-        LOG(ERROR) << "unexpected display event data size: " << dataSize;
-        free(response);
-        return nullptr;
-    }
-
-    return response;
 }
 };  // anonymous namespace
 
@@ -263,76 +230,28 @@ Return<Result> SensorsSubHal::injectSensorData_2_1(const Event& event) {
 }
 
 void SensorsSubHal::displayMonitorThread() {
-    android::base::unique_fd disp_fd(open(kDispFeatureDevice, O_RDWR));
-    if (disp_fd.get() == -1) {
-        LOG(ERROR) << "failed to open " << kDispFeatureDevice;
-        return;
-    }
-
-    disp_event_req req = {};
-    req.base.flag = 0;
-    req.base.disp_id = MI_DISP_PRIMARY;
-    req.type = MI_DISP_EVENT_POWER;
-    if (ioctl(disp_fd.get(), MI_DISP_IOCTL_REGISTER_EVENT, &req) < 0) {
-        LOG(ERROR) << "failed to register display event";
-        return;
-    }
-
     display_on_.store(currentBrightness() > 0);
 
-    struct pollfd dispEventPoll = {
-            .fd = disp_fd.get(),
-            .events = POLLIN,
-    };
-
     while (!stop_disp_thread_.load()) {
-        int rc = poll(&dispEventPoll, 1, -1);
-        if (rc < 0) {
-            if (errno == EINTR) {
-                continue;
-            }
-            LOG(ERROR) << "failed to poll " << kDispFeatureDevice << ", err: " << rc;
-            continue;
-        }
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        setDisplayOn(currentBrightness() > 0);
+    }
+}
 
-        if (dispEventPoll.revents & (POLLERR | POLLHUP | POLLNVAL)) {
-            LOG(ERROR) << "display event fd error, revents=" << dispEventPoll.revents
-                       << ", retrying in 5s";
-            dispEventPoll.revents = 0;
-            std::this_thread::sleep_for(std::chrono::seconds(5));
-            continue;
-        }
-        if (!(dispEventPoll.revents & POLLIN)) {
-            continue;
-        }
+void SensorsSubHal::setDisplayOn(bool on) {
+    const bool previous = display_on_.exchange(on);
+    if (on == previous) {
+        return;
+    }
+    LOG(INFO) << "display " << (on ? "on" : "off");
 
-        std::unique_ptr<disp_event_resp, decltype(&free)> response(parseDispEvent(disp_fd.get()),
-                                                                   &free);
-        if (!response) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            continue;
-        }
-
-        if (response->base.type != MI_DISP_EVENT_POWER) {
-            LOG(ERROR) << "unexpected display event: " << response->base.type;
-            continue;
-        }
-
-        const bool on = response->data[0] == MI_DISP_POWER_ON;
-        const bool previous = display_on_.exchange(on);
-        if (on == previous) {
-            continue;
-        }
-        LOG(INFO) << "display " << (on ? "on" : "off");
-
-        std::lock_guard<std::mutex> lock(display_mutex_);
-        if (on && requested_enabled_.load() && gated_raw_handle_ != -1) {
-            impl_->activate(gated_raw_handle_, true);
-            sensor_currently_enabled_.store(true);
-        } else if (!on && sensor_currently_enabled_.load() && gated_raw_handle_ != -1) {
-            impl_->activate(gated_raw_handle_, false);
-            sensor_currently_enabled_.store(false);
-        }
+    std::lock_guard<std::mutex> lock(display_mutex_);
+    if (on && requested_enabled_.load() && gated_raw_handle_ != -1) {
+        impl_->activate(gated_raw_handle_, true);
+        sensor_currently_enabled_.store(true);
+    } else if (!on && sensor_currently_enabled_.load() && gated_raw_handle_ != -1) {
+        impl_->activate(gated_raw_handle_, false);
+        sensor_currently_enabled_.store(false);
     }
 }
 
