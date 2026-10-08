@@ -293,9 +293,21 @@ void SensorsSubHal::displayMonitorThread() {
             continue;
         }
 
+        if (dispEventPoll.revents & (POLLERR | POLLHUP | POLLNVAL)) {
+            LOG(ERROR) << "display event fd error, revents=" << dispEventPoll.revents
+                       << ", retrying in 5s";
+            dispEventPoll.revents = 0;
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            continue;
+        }
+        if (!(dispEventPoll.revents & POLLIN)) {
+            continue;
+        }
+
         std::unique_ptr<disp_event_resp, decltype(&free)> response(parseDispEvent(disp_fd.get()),
                                                                    &free);
         if (!response) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
             continue;
         }
 
@@ -309,6 +321,7 @@ void SensorsSubHal::displayMonitorThread() {
         if (on == previous) {
             continue;
         }
+        LOG(INFO) << "display " << (on ? "on" : "off");
 
         std::lock_guard<std::mutex> lock(display_mutex_);
         if (on && requested_enabled_.load() && gated_raw_handle_ != -1) {
