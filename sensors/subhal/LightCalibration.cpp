@@ -25,6 +25,8 @@ constexpr char kPanelInfo[] = "/sys/class/mi_display/disp-DSI-0/panel_info";
 constexpr char kPanelP17_35[] = "mdss_dsi_p17_35_0F_0b";
 constexpr char kPanelP17_41_02[] = "mdss_dsi_p17_41_02_0a";
 constexpr char kPanelP17_41_0F[] = "mdss_dsi_p17_41_0F_0c";
+constexpr int32_t kBacklightMax = 4095;
+constexpr int32_t kLeakageTableMax = 2047;
 
 const char* configForPanel() {
     std::string info;
@@ -307,11 +309,13 @@ float LightCalibration::interpolate(const std::vector<LeakageRow>& table, int32_
 }
 
 float LightCalibration::leakage(int32_t brightness, bool ir) const {
+    const int32_t dbv =
+            std::clamp(brightness, 0, kBacklightMax) * kLeakageTableMax / kBacklightMax;
     const float content = mContentLevel.load();
     if (content >= 0.f && mFullWhite.size() > 1) {
-        return interpolate(mFullWhite, brightness, ir) * content;
+        return interpolate(mFullWhite, dbv, ir) * content;
     }
-    return interpolate(mLeakage, brightness, ir);
+    return interpolate(mLeakage, dbv, ir);
 }
 
 float LightCalibration::leakageAls(int32_t brightness) const {
