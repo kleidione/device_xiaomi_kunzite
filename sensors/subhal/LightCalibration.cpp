@@ -92,11 +92,12 @@ bool LightCalibration::loadConfigCoefficients(const std::string& path) {
     if (parts.size() < 7) {
         return false;
     }
+    // sip1328 order: coef0A, coef1A, coef0B, coef1B, dgfA, dgfB, irThreshold.
     mCoef0A = strtof(parts[0].c_str(), nullptr);
     mCoef1A = strtof(parts[1].c_str(), nullptr);
-    mDgfA = strtof(parts[2].c_str(), nullptr);
-    mCoef0B = strtof(parts[3].c_str(), nullptr);
-    mCoef1B = strtof(parts[4].c_str(), nullptr);
+    mCoef0B = strtof(parts[2].c_str(), nullptr);
+    mCoef1B = strtof(parts[3].c_str(), nullptr);
+    mDgfA = strtof(parts[4].c_str(), nullptr);
     mDgfB = strtof(parts[5].c_str(), nullptr);
     mIrThreshold = strtof(parts[6].c_str(), nullptr);
     return true;
