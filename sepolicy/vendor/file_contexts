@@ -13,6 +13,14 @@
 /dev/block/platform/soc/1d84000.ufshc/by-name/idmanager_[ab] u:object_r:vendor_custom_ab_block_device:s0
 
 # Camera
+/vendor/lib64/libanc_dc_base\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libanc_face\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libanc_facesr\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libanc_hdr\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libanc_hdr_adapter_AncSuperNightLite\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libanc_night\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libanc_single_bokeh\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libanc_single_rt_bokeh\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libcamxcommonutils\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libcamxfacialfeatures\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libcamxfdalgo\.so u:object_r:same_process_hal_file:s0
@@ -26,7 +34,12 @@
 /vendor/lib64/libcamxswispiqmodule\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libcamxswprocessalgo\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libcamxtintlessalgo\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libcc_fd\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libcamera_nn_stub\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libcamera_scene\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libcamerapostproc\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libcom.xiaomi.metadatautils\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libcom.xiaomi.pluginutils\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libmmcamera_bestats\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libmmcamera_cac\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libmmcamera_lscv35\.so u:object_r:same_process_hal_file:s0
@@ -54,6 +67,20 @@
 /vendor/lib64/libmialgo_sd\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libmialgo_utils\.so u:object_r:same_process_hal_file:s0
 /vendor/lib64/libmialgoengine\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmialgoengine2\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmpbase\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmorpho_Depurple\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmorpho_HDSR\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmorpho_HdrChecker\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmorpho_ImageRefiner\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmorpho_Ldc\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmorpho_ubwc\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libmorpho_video_stabilizer\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libQnnHtpV73Stub\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/libTrueSight\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/qnn_2_33/libQnnHtp\.so u:object_r:same_process_hal_file:s0
+/vendor/lib64/qnn_2_33/libQnnSystem\.so u:object_r:same_process_hal_file:s0
+/vendor/lib/rfsa/adsp/libQnnHtpV73Skel\.so u:object_r:same_process_hal_file:s0
 
 # Charge
 /(vendor|system/vendor)/bin/hw/vendor.xiaomi.hardware.micharge-service u:object_r:hal_micharge_default_exec:s0
